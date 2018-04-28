@@ -10,6 +10,19 @@ namespace TeLoArreglo.Application.Dtos
             configuration.Configurators.Add(cfg =>
                 cfg.CreateMap<UserLoginDto, Logic.Entities.User>()
             );
+
+            configuration.Configurators.Add(cfg =>
+                cfg.CreateMap<UserSignUpDtoInput, Logic.Entities.User>()
+            );
+
+            configuration.Configurators.Add(cfg => 
+                cfg.CreateMap<Logic.Entities.User, UserSignUpDtoOutput>()
+                    .ForMember(e => e.Role, opt => opt.MapFrom(src => src.GetType().Name))
+                    );
+
+            configuration.Configurators.Add(cfg =>
+                cfg.CreateMap<Logic.Entities.Action, ActionDto>()
+            );
         }
     }
 }

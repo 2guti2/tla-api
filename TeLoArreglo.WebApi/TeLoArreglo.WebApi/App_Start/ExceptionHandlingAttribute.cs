@@ -19,19 +19,27 @@ namespace TeLoArreglo.WebApi
 
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
+            if (actionExecutedContext.Exception is NotLoggedInException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                {
+                    Content = new StringContent("Not Logged In.")
+                });
+            }
+
+            if (actionExecutedContext.Exception is ForbiddenAccessException)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden)
+                {
+                    Content = new StringContent("You don't have the sufficient privileges to perform this action.")
+                });
+            }
+
             if (actionExecutedContext.Exception is UnauthorizedAccessException)
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound)
                 {
                     Content = new StringContent("Incorrect username or password.")
-                });
-            }
-
-            if (actionExecutedContext.Exception is InvalidApiKeyException)
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    Content = new StringContent("Invalid API key.")
                 });
             }
 

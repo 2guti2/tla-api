@@ -22,3 +22,4 @@ C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.We
 C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.Logic\bin\Debug\System.Collections.Immutable.xml
 C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.Logic\obj\Debug\TeLoArreglo.Logic.dll
 C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.Logic\obj\Debug\TeLoArreglo.Logic.pdb
+C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.Logic\obj\Debug\TeLoArreglo.Logic.csprojResolveAssemblyReference.cache

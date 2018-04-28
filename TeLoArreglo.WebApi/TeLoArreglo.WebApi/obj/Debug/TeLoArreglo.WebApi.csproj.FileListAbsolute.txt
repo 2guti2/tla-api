@@ -121,3 +121,6 @@ C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.We
 C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.WebApi\obj\Debug\TeLoArreglo.WebApi.csprojResolveAssemblyReference.cache
 C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.WebApi\obj\Debug\TeLoArreglo.WebApi.dll
 C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.WebApi\obj\Debug\TeLoArreglo.WebApi.pdb
+C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.WebApi\bin\System.Web.Cors.dll
+C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.WebApi\bin\System.Web.Http.Cors.dll
+C:\Users\mgutierrez\Documents\Visual Studio 2017\Projects\tla-api\TeLoArreglo.WebApi\TeLoArreglo.WebApi\bin\System.Web.Http.Cors.xml

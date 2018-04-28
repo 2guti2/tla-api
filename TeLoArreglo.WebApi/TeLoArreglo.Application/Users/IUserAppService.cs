@@ -1,4 +1,6 @@
-﻿using TeLoArreglo.Application.Dtos.User;
+﻿using System.Collections.Generic;
+using TeLoArreglo.Application.Dtos.User;
+using TeLoArreglo.Logic.Entities;
 
 namespace TeLoArreglo.Application.Users
 {
@@ -6,5 +8,7 @@ namespace TeLoArreglo.Application.Users
     {
         string Login(UserLoginDto userDto);
         void Logout(string token);
+        UserSignUpDtoOutput SignUp(string token, UserSignUpDtoInput user);
+        List<ActionDto> GetActionsOf(string token);
     }
 }

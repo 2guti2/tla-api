@@ -9,6 +9,6 @@ namespace TeLoArreglo.Logic.Entities
         public string Password { get; set; }
         public bool IsBlocked { get; set; } = false;
 
-        public virtual List<Action> PermittedActions => new List<Action> { Action.Generic };
+        public virtual List<Action> PermittedActions => new List<Action>();
     }
 }

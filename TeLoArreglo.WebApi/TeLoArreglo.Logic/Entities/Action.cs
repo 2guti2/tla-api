@@ -2,6 +2,6 @@
 {
     public enum Action
     {
-        Generic = 0
+        CreateUser = 0
     }
 }
