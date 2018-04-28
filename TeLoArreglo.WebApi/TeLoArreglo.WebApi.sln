@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeLoArreglo.WebApi", "TeLoArreglo.WebApi\TeLoArreglo.WebApi.csproj", "{7D6CB53B-1766-4079-92AC-46A0E58880F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeLoArreglo.Application", "TeLoArreglo.Application\TeLoArreglo.Application.csproj", "{4DCF6F95-D0DC-47C0-AB8C-07109189AD6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeLoArreglo.Logic", "TeLoArreglo.Logic\TeLoArreglo.Logic.csproj", "{6E3B7064-D165-42C5-B54A-3EBB52C474C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeLoArreglo.Repository", "TeLoArreglo.Repository\TeLoArreglo.Repository.csproj", "{55276FD9-23B0-4823-BB0B-0F5F65CF3659}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EA1C304D-5241-475B-A8AA-0B95F3A87F37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeLoArreglo.Tests.Application", "TeLoArreglo.Tests.Application\TeLoArreglo.Tests.Application.csproj", "{7AB0E46F-1C96-46CE-B42D-2C17FED45F86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{2791CBAC-D33F-4F82-A675-EB7AFE3A484B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeLoArreglo.Tests.Factories", "TeLoArreglo.Tests.Factories\TeLoArreglo.Tests.Factories.csproj", "{F98F1944-756A-4159-973F-E1360CE56E93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D6CB53B-1766-4079-92AC-46A0E58880F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D6CB53B-1766-4079-92AC-46A0E58880F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D6CB53B-1766-4079-92AC-46A0E58880F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D6CB53B-1766-4079-92AC-46A0E58880F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DCF6F95-D0DC-47C0-AB8C-07109189AD6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DCF6F95-D0DC-47C0-AB8C-07109189AD6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DCF6F95-D0DC-47C0-AB8C-07109189AD6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DCF6F95-D0DC-47C0-AB8C-07109189AD6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E3B7064-D165-42C5-B54A-3EBB52C474C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E3B7064-D165-42C5-B54A-3EBB52C474C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E3B7064-D165-42C5-B54A-3EBB52C474C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E3B7064-D165-42C5-B54A-3EBB52C474C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55276FD9-23B0-4823-BB0B-0F5F65CF3659}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55276FD9-23B0-4823-BB0B-0F5F65CF3659}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55276FD9-23B0-4823-BB0B-0F5F65CF3659}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55276FD9-23B0-4823-BB0B-0F5F65CF3659}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AB0E46F-1C96-46CE-B42D-2C17FED45F86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AB0E46F-1C96-46CE-B42D-2C17FED45F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AB0E46F-1C96-46CE-B42D-2C17FED45F86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AB0E46F-1C96-46CE-B42D-2C17FED45F86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F98F1944-756A-4159-973F-E1360CE56E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F98F1944-756A-4159-973F-E1360CE56E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F98F1944-756A-4159-973F-E1360CE56E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F98F1944-756A-4159-973F-E1360CE56E93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7AB0E46F-1C96-46CE-B42D-2C17FED45F86} = {EA1C304D-5241-475B-A8AA-0B95F3A87F37}
+		{2791CBAC-D33F-4F82-A675-EB7AFE3A484B} = {EA1C304D-5241-475B-A8AA-0B95F3A87F37}
+		{F98F1944-756A-4159-973F-E1360CE56E93} = {2791CBAC-D33F-4F82-A675-EB7AFE3A484B}
+	EndGlobalSection
+EndGlobal
