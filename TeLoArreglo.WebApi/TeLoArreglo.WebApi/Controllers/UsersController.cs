@@ -29,7 +29,7 @@ namespace TeLoArreglo.WebApi.Controllers
         {
             string token = GetAuthToken();
 
-            return _userAppService.SignUp(token, user);
+            return _userAppService.CreateUser(token, user);
         }
 
         private string GetAuthToken()

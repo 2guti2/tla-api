@@ -64,17 +64,18 @@ namespace TeLoArreglo.Application.Users
             _sessionRepository.Delete(session);
         }
 
-        public UserSignUpDtoOutput SignUp(string token, UserSignUpDtoInput userDto)
+        public UserSignUpDtoOutput CreateUser(string token, UserSignUpDtoInput userDto)
         {
-            User executingUser = GetExecutingUser(token);
+            User newUser;
 
-            if (executingUser == null)
-                throw new NotLoggedInException();
+            if (token != null)
+            {
+                VerifyCredentialsForUserCreation(token);
 
-            if(!_permissionManager.HasPermission(executingUser, Action.CreateUser))
-                throw new ForbiddenAccessException();
-
-            User newUser = InstanceCreator.User(userDto.Role) as User;
+                newUser = InstanceCreator.User(userDto.Role) as User;
+            }
+            else
+                newUser = InstanceCreator.User(typeof(User).Name) as User;
 
             _objectMapper.Map(userDto, newUser);
 
@@ -85,20 +86,30 @@ namespace TeLoArreglo.Application.Users
             return _objectMapper.Map<UserSignUpDtoOutput>(newUser);
         }
 
+        private void VerifyCredentialsForUserCreation(string token)
+        {
+            User executingUser = GetExecutingUserIfLoggedIn(token);
+
+            if (!_permissionManager.HasPermission(executingUser, Action.CreateUser))
+                throw new ForbiddenAccessException();
+        }
+
         public List<ActionDto> GetActionsOf(string token)
         {
-            User executingUser = GetExecutingUser(token);
-
-            if(executingUser == null)
-                throw new NotLoggedInException();
+            User executingUser = GetExecutingUserIfLoggedIn(token);
 
             return _objectMapper.Map<List<ActionDto>>(executingUser.PermittedActions);
         }
 
-        private User GetExecutingUser(string token)
+        private User GetExecutingUserIfLoggedIn(string token)
         {
-            return _sessionRepository.GetAllIncluding(s => s.User)
+            User executingUser = _sessionRepository.GetAllIncluding(s => s.User)
                 .FirstOrDefault(s => s.Token.Equals(token))?.User;
+
+            if (executingUser == null)
+                throw new NotLoggedInException();
+
+            return executingUser;
         }
     }
 }

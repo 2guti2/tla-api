@@ -11,8 +11,7 @@ namespace TeLoArreglo.Logic.Common
         {
             var assembly = Assembly.GetAssembly(typeof(User));
 
-            var type = assembly.GetTypes()
-                .First(t => t.Name == className);
+            var type = assembly.GetTypes().First(t => t.Name == className);
 
             return Activator.CreateInstance(type);
         }

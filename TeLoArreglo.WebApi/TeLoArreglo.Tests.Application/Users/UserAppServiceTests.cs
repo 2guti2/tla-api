@@ -67,7 +67,7 @@ namespace TeLoArreglo.Tests.Application.Users
         }
 
         [Fact]
-        public void UserAppService_SignUp_Successful()
+        public void UserAppService_CreateUser_Successful()
         {
             Session session = SessionFactory.NewSession();
 
@@ -77,7 +77,7 @@ namespace TeLoArreglo.Tests.Application.Users
 
             UserSignUpDtoInput input = UserFactory.NewSignUpDtoInputForAdmin();
 
-            UserSignUpDtoOutput output = _userAppService.SignUp(session.Token, input);
+            UserSignUpDtoOutput output = _userAppService.CreateUser(session.Token, input);
 
             Assert.Equal(input.Role, output.Role);
 
@@ -89,17 +89,35 @@ namespace TeLoArreglo.Tests.Application.Users
         }
 
         [Fact]
-        public void UserAppService_SignUp_NotLoggedIn()
+        public void UserAppService_CreateUser_UserRegistration()
+        {
+            UserSignUpDtoInput input = UserFactory.NewSignUpDtoInputForAdmin();
+
+            UserSignUpDtoOutput output = _userAppService.CreateUser(null, input);
+
+            string expectedRole = typeof(User).Name;
+
+            Assert.Equal(expectedRole, output.Role);
+
+            UsingDbContext(context =>
+            {
+                User user = context.Users.FirstOrDefault(u => u.Id == output.Id);
+                Assert.Equal(output.Username, user?.Username);
+            });
+        }
+
+        [Fact]
+        public void UserAppService_CreateUser_NotLoggedIn()
         {
             Session session = SessionFactory.NewSession();
 
             UserSignUpDtoInput input = UserFactory.NewSignUpDtoInputForAdmin();
 
-            Assert.Throws<NotLoggedInException>(() => _userAppService.SignUp(session.Token, input));
+            Assert.Throws<NotLoggedInException>(() => _userAppService.CreateUser(session.Token, input));
         }
 
         [Fact]
-        public void UserAppService_SignUp_Unauthorized()
+        public void UserAppService_CreateUser_Unauthorized()
         {
             Session session = SessionFactory.NewSession();
 
@@ -109,7 +127,7 @@ namespace TeLoArreglo.Tests.Application.Users
 
             UserSignUpDtoInput input = UserFactory.NewSignUpDtoInputForAdmin();
 
-            Assert.Throws<ForbiddenAccessException>(() => _userAppService.SignUp(session.Token, input));
+            Assert.Throws<ForbiddenAccessException>(() => _userAppService.CreateUser(session.Token, input));
         }
 
         [Fact]
