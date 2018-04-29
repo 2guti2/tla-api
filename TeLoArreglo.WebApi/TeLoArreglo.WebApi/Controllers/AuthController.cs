@@ -15,19 +15,17 @@ namespace TeLoArreglo.WebApi.Controllers
         }
 
         [HttpPost, Route("api/Login")]
-        public string Login([FromBody] UserLoginDto loginUser)
+        public TokenDto Login([FromBody] UserLoginDto loginUser)
         {
             return _userAppService.Login(loginUser);
         }
 
         [HttpPost, Route("api/Logout")]
-        public string Logout()
+        public TokenDto Logout()
         {
             string token = Utillities.GetTokenFromRequest(Request);
 
-            _userAppService.Logout(token);
-
-            return token;
+            return _userAppService.Logout(token);
         }
     }
 }

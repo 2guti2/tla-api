@@ -1,5 +1,6 @@
 ﻿using Abp.AutoMapper;
 using TeLoArreglo.Application.Dtos.User;
+using TeLoArreglo.Logic.Entities;
 
 namespace TeLoArreglo.Application.Dtos
 {
@@ -22,6 +23,10 @@ namespace TeLoArreglo.Application.Dtos
 
             configuration.Configurators.Add(cfg =>
                 cfg.CreateMap<Logic.Entities.Action, ActionDto>()
+            );
+
+            configuration.Configurators.Add(cfg => 
+                cfg.CreateMap<Session, TokenDto>()
             );
         }
     }

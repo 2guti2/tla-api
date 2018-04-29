@@ -34,7 +34,7 @@ namespace TeLoArreglo.Application.Users
             _sessionRepository = sessionRepository;
         }
 
-        public string Login(UserLoginDto userDto)
+        public TokenDto Login(UserLoginDto userDto)
         {
             User user = _userRepository.FirstOrDefault(u => u.Username.Equals(userDto.Username) && u.Password.Equals(userDto.Password));
             
@@ -44,17 +44,17 @@ namespace TeLoArreglo.Application.Users
             Session session = _sessionRepository.FirstOrDefault(s => s.User.Id == user.Id);
 
             if (session != null)
-                return session.Token;
+                return _objectMapper.Map<TokenDto>(session);
 
             session = new Session(user);
             _sessionRepository.Insert(session);
 
             _unitOfWorkManager.Current.SaveChanges();
 
-            return session.Token;
+            return _objectMapper.Map<TokenDto>(session);
         }
 
-        public void Logout(string token)
+        public TokenDto Logout(string token)
         {
             Session session = _sessionRepository.FirstOrDefault(s => s.Token.Equals(token));
 
@@ -62,6 +62,8 @@ namespace TeLoArreglo.Application.Users
                 throw new NotLoggedInException();
 
             _sessionRepository.Delete(session);
+
+            return _objectMapper.Map<TokenDto>(session);
         }
 
         public UserSignUpDtoOutput CreateUser(string token, UserSignUpDtoInput userDto)

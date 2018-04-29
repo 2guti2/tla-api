@@ -43,9 +43,17 @@ namespace TeLoArreglo.WebApi
                 });
             }
 
-            if (actionExecutedContext.Exception != null)
+            if (actionExecutedContext.Exception is InvalidRequestException)
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Api key not found.")
+                });
+            }
+
+            if (actionExecutedContext.Exception != null)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("Something went wrong. Please try again later.")
                 });

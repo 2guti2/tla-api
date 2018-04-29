@@ -6,8 +6,8 @@ namespace TeLoArreglo.Application.Users
 {
     public interface IUserAppService
     {
-        string Login(UserLoginDto userDto);
-        void Logout(string token);
+        TokenDto Login(UserLoginDto userDto);
+        TokenDto Logout(string token);
         UserSignUpDtoOutput CreateUser(string token, UserSignUpDtoInput user);
         List<ActionDto> GetActionsOf(string token);
     }
