@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using Abp.Domain.Entities;
 
 namespace TeLoArreglo.Logic.Entities
@@ -10,5 +12,10 @@ namespace TeLoArreglo.Logic.Entities
         public bool IsBlocked { get; set; } = false;
 
         public virtual List<Action> PermittedActions => new List<Action>();
+
+        public static Expression<Func<User, bool>> EqualityExpression(User toCompare)
+        {
+            return u => u.Username.Equals(toCompare.Username) && u.Password.Equals(toCompare.Password);
+        } 
     }
 }

@@ -36,12 +36,12 @@ namespace TeLoArreglo.Application.Users
 
         public TokenDto Login(UserLoginDto userDto)
         {
-            User user = _userRepository.FirstOrDefault(u => u.Username.Equals(userDto.Username) && u.Password.Equals(userDto.Password));
+            User user = _userRepository.FirstOrDefault(User.EqualityExpression(_objectMapper.Map<User>(userDto)));
             
             if(user == null)
                 throw new UnauthorizedAccessException();
 
-            Session session = _sessionRepository.FirstOrDefault(s => s.User.Id == user.Id);
+            Session session = _sessionRepository.FirstOrDefault(Session.EqualityExpressionByUser(user));
 
             if (session != null)
                 return _objectMapper.Map<TokenDto>(session);
@@ -56,7 +56,7 @@ namespace TeLoArreglo.Application.Users
 
         public TokenDto Logout(string token)
         {
-            Session session = _sessionRepository.FirstOrDefault(s => s.Token.Equals(token));
+            Session session = GetCurrentSession(token);
 
             if(session == null)
                 throw new NotLoggedInException();
@@ -74,10 +74,10 @@ namespace TeLoArreglo.Application.Users
             {
                 VerifyCredentialsForUserCreation(token);
 
-                newUser = InstanceCreator.User(userDto.Role) as User;
+                newUser = GlobalFactory.User(userDto.Role) as User;
             }
             else
-                newUser = InstanceCreator.User(typeof(User).Name) as User;
+                newUser = GlobalFactory.User(typeof(User).Name) as User;
 
             _objectMapper.Map(userDto, newUser);
 
@@ -105,13 +105,18 @@ namespace TeLoArreglo.Application.Users
 
         private User GetExecutingUserIfLoggedIn(string token)
         {
-            User executingUser = _sessionRepository.GetAllIncluding(s => s.User)
-                .FirstOrDefault(s => s.Token.Equals(token))?.User;
+            User executingUser = GetCurrentSession(token)?.User;
 
             if (executingUser == null)
                 throw new NotLoggedInException();
 
             return executingUser;
+        }
+
+        private Session GetCurrentSession(string token)
+        {
+            return _sessionRepository.GetAllIncluding(s => s.User)
+                .FirstOrDefault(Session.EqualityExpression(new Session(token)));
         }
     }
 }

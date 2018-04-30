@@ -50,7 +50,7 @@ namespace TeLoArreglo.Tests.Application.Users
 
             UsingDbContext(context => context.Users.Add(user));
 
-            string token = _userAppService.Login(new UserLoginDto { Username = user.Username, Password = user.Password });
+            string token = _userAppService.Login(new UserLoginDto { Username = user.Username, Password = user.Password }).Token;
 
             Assert.False(token.IsNullOrEmpty());
 

@@ -76,7 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\InstanceCreator.cs" />
+    <Compile Include="Common\GlobalFactory.cs" />
     <Compile Include="Common\IPermissionManager.cs" />
     <Compile Include="Common\PermissionManager.cs" />
     <Compile Include="Entities\Action.cs" />

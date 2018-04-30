@@ -22,5 +22,17 @@ namespace TeLoArreglo.WebApi
                 throw new InvalidRequestException();
             }
         }
+
+        public static string GetAuthTokenOrNullIfException(HttpRequestMessage request)
+        {
+            string token = null;
+            try
+            {
+                token = GetTokenFromRequest(request);
+            }
+            catch (InvalidRequestException) { }
+
+            return token;
+        }
     }
 }

@@ -2,7 +2,6 @@
 using System.Web.Http;
 using Abp.WebApi.Controllers;
 using TeLoArreglo.Application.Dtos.User;
-using TeLoArreglo.Application.Exceptions;
 using TeLoArreglo.Application.Users;
 
 namespace TeLoArreglo.WebApi.Controllers
@@ -27,20 +26,9 @@ namespace TeLoArreglo.WebApi.Controllers
         [HttpPost, Route("api/Users")]
         public UserSignUpDtoOutput SignUpUser(UserSignUpDtoInput user)
         {
-            string token = GetAuthToken();
+            string token = Utillities.GetAuthTokenOrNullIfException(Request);
 
             return _userAppService.CreateUser(token, user);
-        }
-
-        private string GetAuthToken()
-        {
-            string token = null;
-            try
-            {
-                token = Utillities.GetTokenFromRequest(Request);
-            } catch (InvalidRequestException) { }
-
-            return token;
         }
     }
 }

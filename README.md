@@ -25,7 +25,7 @@ POST /api/login
 
 ##### Example
 
-```
+```json
 {
   "username" : "admin",
   "password" : "123456"
@@ -35,7 +35,7 @@ POST /api/login
 ### 1.2 Response
 
 ##### Example
-```
+```json
 {
     "token": "499eedc1-8e42-44b1-9e69-83139abd12d6"
 }
@@ -70,7 +70,7 @@ POST /api/logout
 
 ##### Example
 
-```
+```json
 {
     "token": "499eedc1-8e42-44b1-9e69-83139abd12d6"
 }
@@ -104,10 +104,10 @@ POST /api/users
 
 ##### Example
 
-```
+```json
 {
     "username": "admin",
-    "password": "123456"
+    "password": "123456",
     "role": "Admin"
 }
 ```
@@ -116,7 +116,7 @@ POST /api/users
 
 ##### Example
 
-```
+```json
 {
     "username": "admin",
     "role": "Admin",
@@ -148,7 +148,7 @@ GET /api/actions
 ### 4.2 Response
 
 ##### Example
-```
+```json
 [0,1,2]
 ```
 
