@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Abp.Domain.Repositories;
-using Abp.Domain.Uow;
 using Abp.ObjectMapping;
+using TeLoArreglo.Application.Dtos.Error;
 using TeLoArreglo.Application.Dtos.User;
 using TeLoArreglo.Application.Exceptions;
 using TeLoArreglo.Logic.Common;
@@ -14,20 +16,16 @@ namespace TeLoArreglo.Application.Users
 {
     public class UserAppService : AppService, IUserAppService
     {
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
         private readonly IObjectMapper _objectMapper;
         private readonly IPermissionManager _permissionManager;
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Session> _sessionRepository;
 
-        public UserAppService(
-            IUnitOfWorkManager unitOfWorkManager,
-            IObjectMapper objectMapper,
+        public UserAppService(IObjectMapper objectMapper,
             IPermissionManager permissionManager,
             IRepository<User> userRepository,
             IRepository<Session> sessionRepository)
         {
-            _unitOfWorkManager = unitOfWorkManager;
             _objectMapper = objectMapper;
             _permissionManager = permissionManager;
             _userRepository = userRepository;
@@ -48,8 +46,8 @@ namespace TeLoArreglo.Application.Users
 
             session = new Session(user);
             _sessionRepository.Insert(session);
-
-            _unitOfWorkManager.Current.SaveChanges();
+            
+            SaveChanges();
 
             return _objectMapper.Map<TokenDto>(session);
         }
@@ -66,6 +64,7 @@ namespace TeLoArreglo.Application.Users
             return _objectMapper.Map<TokenDto>(session);
         }
 
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public UserSignUpDtoOutput CreateUser(string token, UserSignUpDtoInput userDto)
         {
             User newUser;
@@ -81,11 +80,26 @@ namespace TeLoArreglo.Application.Users
 
             _objectMapper.Map(userDto, newUser);
 
+            if(!newUser.IsValid())
+                throw new ModelValidationException(_objectMapper.Map<List<ValidationErrorDto>>(newUser.GetValidationErrors()));
+
             _userRepository.Insert(newUser);
 
-            CurrentUnitOfWork.SaveChanges();
+            SaveChanges();
 
             return _objectMapper.Map<UserSignUpDtoOutput>(newUser);
+        }
+
+        private void SaveChanges()
+        {
+            try
+            {
+                CurrentUnitOfWork.SaveChanges();
+            }
+            catch (DataException)
+            {
+                throw new UsernameDuplicatedException();
+            }
         }
 
         private void VerifyCredentialsForUserCreation(string token)

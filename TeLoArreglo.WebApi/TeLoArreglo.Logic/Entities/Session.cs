@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using Abp.Domain.Entities;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 
 namespace TeLoArreglo.Logic.Entities
 {

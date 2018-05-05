@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TeLoArreglo.Application.Dtos.User;
-using TeLoArreglo.Logic.Entities;
 
 namespace TeLoArreglo.Application.Users
 {

@@ -1,4 +1,5 @@
 ﻿using Abp.AutoMapper;
+using TeLoArreglo.Application.Dtos.Error;
 using TeLoArreglo.Application.Dtos.User;
 using TeLoArreglo.Logic.Entities;
 
@@ -27,6 +28,10 @@ namespace TeLoArreglo.Application.Dtos
 
             configuration.Configurators.Add(cfg => 
                 cfg.CreateMap<Session, TokenDto>()
+            );
+
+            configuration.Configurators.Add(cfg => 
+                cfg.CreateMap<ValidationError, ValidationErrorDto>()
             );
         }
     }

@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201804280513530_Session.Designer.cs">
       <DependentUpon>201804280513530_Session.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805032248295_UsernameUnique.cs" />
+    <Compile Include="Migrations\201805032248295_UsernameUnique.Designer.cs">
+      <DependentUpon>201805032248295_UsernameUnique.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryModule.cs" />
@@ -120,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804280513530_Session.resx">
       <DependentUpon>201804280513530_Session.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805032248295_UsernameUnique.resx">
+      <DependentUpon>201805032248295_UsernameUnique.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

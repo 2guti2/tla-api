@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Filters;
+using TeLoArreglo.Application.Dtos.Error;
 using TeLoArreglo.Application.Exceptions;
 
 namespace TeLoArreglo.WebApi
@@ -19,35 +22,33 @@ namespace TeLoArreglo.WebApi
 
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            if (actionExecutedContext.Exception is NotLoggedInException)
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Unauthorized)
-                {
-                    Content = new StringContent("Not Logged In.")
-                });
-            }
-
-            if (actionExecutedContext.Exception is ForbiddenAccessException)
-            {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Forbidden)
-                {
-                    Content = new StringContent("You don't have the sufficient privileges to perform this action.")
-                });
-            }
+            var formatter = new JsonMediaTypeFormatter();
 
             if (actionExecutedContext.Exception is UnauthorizedAccessException)
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound)
                 {
-                    Content = new StringContent("Incorrect username or password.")
+                    Content = new ObjectContent<ErrorDto>(new ErrorDto("Incorrect username or password."), formatter)
                 });
             }
 
-            if (actionExecutedContext.Exception is InvalidRequestException)
+            if (actionExecutedContext.Exception is ModelValidationException)
             {
+                var typedException = actionExecutedContext.Exception as ModelValidationException;
+
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {
-                    Content = new StringContent("Api key not found.")
+                    Content = new ObjectContent<List<ValidationErrorDto>>(typedException.Errors, formatter)
+                });
+            }
+
+            if (actionExecutedContext.Exception is CommonErrorException)
+            {
+                var typedException = actionExecutedContext.Exception as CommonErrorException;
+
+                throw new HttpResponseException(new HttpResponseMessage(typedException.StatusCode)
+                {
+                    Content = new ObjectContent<ErrorDto>(typedException.Error, formatter)
                 });
             }
 
@@ -55,7 +56,7 @@ namespace TeLoArreglo.WebApi
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
-                    Content = new StringContent("Something went wrong. Please try again later.")
+                    Content = new ObjectContent<ErrorDto>(new ErrorDto("Something went wrong. Please try again later."), formatter)
                 });
             }
         }
