@@ -5,8 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Filters;
-using TeLoArreglo.Application.Dtos.Error;
-using TeLoArreglo.Application.Exceptions;
+using TeLoArreglo.Exceptions;
 
 namespace TeLoArreglo.WebApi
 {

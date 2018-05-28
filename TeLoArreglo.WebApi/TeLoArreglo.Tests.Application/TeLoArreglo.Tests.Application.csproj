@@ -151,6 +151,10 @@
       <Project>{4dcf6f95-d0dc-47c0-ab8c-07109189ad6a}</Project>
       <Name>TeLoArreglo.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TeLoArreglo.Exceptions\TeLoArreglo.Exceptions.csproj">
+      <Project>{4f3ce6f7-8c2e-491d-9b8e-b45d756d90d2}</Project>
+      <Name>TeLoArreglo.Exceptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeLoArreglo.Logic\TeLoArreglo.Logic.csproj">
       <Project>{6e3b7064-d165-42c5-b54a-3ebb52c474c3}</Project>
       <Name>TeLoArreglo.Logic</Name>

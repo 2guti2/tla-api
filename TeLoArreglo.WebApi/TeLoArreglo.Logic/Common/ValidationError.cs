@@ -1,4 +1,4 @@
-﻿namespace TeLoArreglo.Logic.Entities
+﻿namespace TeLoArreglo.Logic.Common
 {
     public class ValidationError
     {

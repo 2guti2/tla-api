@@ -1,4 +1,4 @@
-﻿namespace TeLoArreglo.Application.Dtos.Error
+﻿namespace TeLoArreglo.Exceptions
 {
     public class ErrorDto
     {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
 using TeLoArreglo.Application.Dtos.User;
-using TeLoArreglo.Application.Exceptions;
 using TeLoArreglo.Application.Users;
+using TeLoArreglo.Exceptions;
 using TeLoArreglo.Logic.Entities;
 using TeLoArreglo.Tests.Factories;
 using Xunit;
@@ -76,6 +76,7 @@ namespace TeLoArreglo.Tests.Application.Users
             UsingDbContext(context => context.Sessions.Add(session));
 
             UserSignUpDtoInput input = UserFactory.NewSignUpDtoInputForAdmin();
+            input.Username += input.Username;
 
             UserSignUpDtoOutput output = _userAppService.CreateUser(session.Token, input);
 

@@ -213,6 +213,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="App_Start\WebModule.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\DamageReportsController.cs" />
+    <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -235,6 +237,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Media\Audio\" />
+    <Folder Include="Media\Images\" />
+    <Folder Include="Media\Videos\" />
+    <Folder Include="Temp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -243,6 +249,10 @@
     <ProjectReference Include="..\TeLoArreglo.Application\TeLoArreglo.Application.csproj">
       <Project>{4dcf6f95-d0dc-47c0-ab8c-07109189ad6a}</Project>
       <Name>TeLoArreglo.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TeLoArreglo.Exceptions\TeLoArreglo.Exceptions.csproj">
+      <Project>{4f3ce6f7-8c2e-491d-9b8e-b45d756d90d2}</Project>
+      <Name>TeLoArreglo.Exceptions</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

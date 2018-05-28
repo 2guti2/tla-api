@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace TeLoArreglo.Application.Exceptions
+namespace TeLoArreglo.Exceptions
 {
     public class ForbiddenAccessException : CommonErrorException
     {

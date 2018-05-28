@@ -103,6 +103,18 @@
     <Compile Include="Migrations\201805032248295_UsernameUnique.Designer.cs">
       <DependentUpon>201805032248295_UsernameUnique.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805050706437_DamageReport.cs" />
+    <Compile Include="Migrations\201805050706437_DamageReport.Designer.cs">
+      <DependentUpon>201805050706437_DamageReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805160623387_DamageGeoCoordinate.cs" />
+    <Compile Include="Migrations\201805160623387_DamageGeoCoordinate.Designer.cs">
+      <DependentUpon>201805160623387_DamageGeoCoordinate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805280027409_UserDamages.cs" />
+    <Compile Include="Migrations\201805280027409_UserDamages.Designer.cs">
+      <DependentUpon>201805280027409_UserDamages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryModule.cs" />
@@ -127,6 +139,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805032248295_UsernameUnique.resx">
       <DependentUpon>201805032248295_UsernameUnique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805050706437_DamageReport.resx">
+      <DependentUpon>201805050706437_DamageReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805160623387_DamageGeoCoordinate.resx">
+      <DependentUpon>201805160623387_DamageGeoCoordinate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805280027409_UserDamages.resx">
+      <DependentUpon>201805280027409_UserDamages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

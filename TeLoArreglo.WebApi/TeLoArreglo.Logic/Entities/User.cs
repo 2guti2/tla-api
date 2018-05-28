@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Abp.Domain.Entities;
 using FluentValidation.Results;
+using TeLoArreglo.Logic.Common;
 using TeLoArreglo.Logic.Validators;
 
 namespace TeLoArreglo.Logic.Entities
@@ -18,8 +19,9 @@ namespace TeLoArreglo.Logic.Entities
 
         public string Password { get; set; }
         public bool IsBlocked { get; set; } = false;
+        public List<DamageReport> DamageReports { get; set; } = new List<DamageReport>();
 
-        public virtual List<Action> PermittedActions => new List<Action>();
+        public virtual List<Action> PermittedActions => new List<Action>{ Action.ReportDamage, Action.QueryDamages };
 
         public static Expression<Func<User, bool>> EqualityExpression(User toCompare)
         {

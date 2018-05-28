@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TeLoArreglo.Application.Dtos.Error;
 
-namespace TeLoArreglo.Application.Exceptions
+namespace TeLoArreglo.Exceptions
 {
     public class ModelValidationException : Exception
     {

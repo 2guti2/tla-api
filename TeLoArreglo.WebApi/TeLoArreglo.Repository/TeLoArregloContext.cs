@@ -11,6 +11,8 @@ namespace TeLoArreglo.Repository
         public virtual IDbSet<Admin> Admins { get; set; }
         public virtual IDbSet<Crew> Crews { get; set; }
         public virtual IDbSet<Session> Sessions { get; set; }
+        public virtual IDbSet<DamageReport> DamageReports { get; set; }
+        public virtual IDbSet<Media> MediaResources { get; set; }
 
         public TeLoArregloContext() : base("name=TeLoArregloContext")
         {

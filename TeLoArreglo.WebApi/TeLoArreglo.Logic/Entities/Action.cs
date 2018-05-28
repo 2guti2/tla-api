@@ -2,6 +2,8 @@
 {
     public enum Action
     {
-        CreateUser = 0
+        CreateUser = 0,
+        ReportDamage = 1,
+        QueryDamages = 2
     }
 }

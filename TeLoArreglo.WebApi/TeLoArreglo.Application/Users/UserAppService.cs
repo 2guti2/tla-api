@@ -5,10 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
-using TeLoArreglo.Application.Dtos.Error;
 using TeLoArreglo.Application.Dtos.User;
-using TeLoArreglo.Application.Exceptions;
+using TeLoArreglo.Exceptions;
 using TeLoArreglo.Logic.Common;
+using TeLoArreglo.Logic.Common.Users;
 using TeLoArreglo.Logic.Entities;
 using Action = TeLoArreglo.Logic.Entities.Action;
 
@@ -18,16 +18,19 @@ namespace TeLoArreglo.Application.Users
     {
         private readonly IObjectMapper _objectMapper;
         private readonly IPermissionManager _permissionManager;
+        private readonly IUserManager _userManager;
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Session> _sessionRepository;
 
         public UserAppService(IObjectMapper objectMapper,
             IPermissionManager permissionManager,
+            IUserManager userManager,
             IRepository<User> userRepository,
             IRepository<Session> sessionRepository)
         {
             _objectMapper = objectMapper;
             _permissionManager = permissionManager;
+            _userManager = userManager;
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
         }
@@ -35,9 +38,8 @@ namespace TeLoArreglo.Application.Users
         public TokenDto Login(UserLoginDto userDto)
         {
             User user = _userRepository.FirstOrDefault(User.EqualityExpression(_objectMapper.Map<User>(userDto)));
-            
-            if(user == null)
-                throw new UnauthorizedAccessException();
+
+            _userManager.ValidateUser(user);
 
             Session session = _sessionRepository.FirstOrDefault(Session.EqualityExpressionByUser(user));
 
@@ -54,10 +56,9 @@ namespace TeLoArreglo.Application.Users
 
         public TokenDto Logout(string token)
         {
-            Session session = GetCurrentSession(token);
+            Session session = UserUtillities.GetCurrentSession(token, _sessionRepository);
 
-            if(session == null)
-                throw new NotLoggedInException();
+            _userManager.ValidateSession(session);
 
             _sessionRepository.Delete(session);
 
@@ -104,7 +105,7 @@ namespace TeLoArreglo.Application.Users
 
         private void VerifyCredentialsForUserCreation(string token)
         {
-            User executingUser = GetExecutingUserIfLoggedIn(token);
+            User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionRepository);
 
             if (!_permissionManager.HasPermission(executingUser, Action.CreateUser))
                 throw new ForbiddenAccessException();
@@ -112,25 +113,9 @@ namespace TeLoArreglo.Application.Users
 
         public List<ActionDto> GetActionsOf(string token)
         {
-            User executingUser = GetExecutingUserIfLoggedIn(token);
+            User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionRepository);
 
             return _objectMapper.Map<List<ActionDto>>(executingUser.PermittedActions);
-        }
-
-        private User GetExecutingUserIfLoggedIn(string token)
-        {
-            User executingUser = GetCurrentSession(token)?.User;
-
-            if (executingUser == null)
-                throw new NotLoggedInException();
-
-            return executingUser;
-        }
-
-        private Session GetCurrentSession(string token)
-        {
-            return _sessionRepository.GetAllIncluding(s => s.User)
-                .FirstOrDefault(Session.EqualityExpression(new Session(token)));
         }
     }
 }

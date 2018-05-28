@@ -1,7 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 
-namespace TeLoArreglo.Application.Exceptions
+namespace TeLoArreglo.Exceptions
 {
     public class InvalidRequestException : CommonErrorException
     {

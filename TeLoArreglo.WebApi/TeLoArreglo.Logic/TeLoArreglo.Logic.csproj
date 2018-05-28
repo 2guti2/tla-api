@@ -92,23 +92,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Media\FilePathResolver.cs" />
     <Compile Include="Common\GlobalFactory.cs" />
     <Compile Include="Common\IPermissionManager.cs" />
+    <Compile Include="Common\Media\AudioManager.cs" />
+    <Compile Include="Common\Media\ImageManager.cs" />
+    <Compile Include="Common\Media\IMediaManagerDomainService.cs" />
+    <Compile Include="Common\Media\MediaManager.cs" />
+    <Compile Include="Common\Media\MediaManagerDomainService.cs" />
+    <Compile Include="Common\Media\VideoManager.cs" />
     <Compile Include="Common\PermissionManager.cs" />
+    <Compile Include="Common\Users\IUserManager.cs" />
+    <Compile Include="Common\Users\UserManager.cs" />
     <Compile Include="Entities\Action.cs" />
     <Compile Include="Entities\Admin.cs" />
     <Compile Include="Entities\Crew.cs" />
+    <Compile Include="Entities\DamageReport.cs" />
+    <Compile Include="Entities\GeoCoordinate.cs" />
+    <Compile Include="Entities\Media.cs" />
     <Compile Include="Entities\Session.cs" />
     <Compile Include="Entities\User.cs" />
-    <Compile Include="Entities\ValidationError.cs" />
+    <Compile Include="Common\ValidationError.cs" />
     <Compile Include="LogicModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\DamageReportValidator.cs" />
     <Compile Include="Validators\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TeLoArreglo.Exceptions\TeLoArreglo.Exceptions.csproj">
+      <Project>{4f3ce6f7-8c2e-491d-9b8e-b45d756d90d2}</Project>
+      <Name>TeLoArreglo.Exceptions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\DamageReports\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

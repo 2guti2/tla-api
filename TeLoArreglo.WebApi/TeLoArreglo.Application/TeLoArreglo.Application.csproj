@@ -69,6 +69,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
     </Reference>
@@ -85,28 +86,35 @@
   <ItemGroup>
     <Compile Include="ApplicationModule.cs" />
     <Compile Include="AppService.cs" />
+    <Compile Include="DamageReports\DamageReportAppService.cs" />
+    <Compile Include="DamageReports\IDamageReportAppService.cs" />
+    <Compile Include="Dtos\DamageReport\DamageReportCompleteOutputDto.cs" />
+    <Compile Include="Dtos\DamageReport\DamageReportInputDto.cs" />
+    <Compile Include="Dtos\DamageReport\DamageReportOutputDto.cs" />
+    <Compile Include="Dtos\DamageReport\GeoCoordinateDto.cs" />
+    <Compile Include="Dtos\DamageReport\MediaDto.cs" />
+    <Compile Include="Dtos\DamageReport\MediaInputDto.cs" />
     <Compile Include="Dtos\DtoMappings.cs" />
-    <Compile Include="Dtos\Error\ErrorDto.cs" />
-    <Compile Include="Dtos\Error\ValidationErrorDto.cs" />
     <Compile Include="Dtos\User\ActionDto.cs" />
     <Compile Include="Dtos\User\TokenDto.cs" />
     <Compile Include="Dtos\User\UserLoginDto.cs" />
     <Compile Include="Dtos\User\UserSignUpDtoInput.cs" />
     <Compile Include="Dtos\User\UserSignUpDtoOutput.cs" />
-    <Compile Include="Exceptions\CommonErrorException.cs" />
-    <Compile Include="Exceptions\ForbiddenAccessException.cs" />
-    <Compile Include="Exceptions\InvalidRequestException.cs" />
-    <Compile Include="Exceptions\ModelValidationException.cs" />
-    <Compile Include="Exceptions\NotLoggedInException.cs" />
-    <Compile Include="Exceptions\UsernameDuplicatedException.cs" />
+    <Compile Include="Media\IMediaAppService.cs" />
+    <Compile Include="Media\MediaAppService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Users\IUserAppService.cs" />
     <Compile Include="Users\UserAppService.cs" />
+    <Compile Include="Users\UserUtillities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TeLoArreglo.Exceptions\TeLoArreglo.Exceptions.csproj">
+      <Project>{4f3ce6f7-8c2e-491d-9b8e-b45d756d90d2}</Project>
+      <Name>TeLoArreglo.Exceptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TeLoArreglo.Logic\TeLoArreglo.Logic.csproj">
       <Project>{6e3b7064-d165-42c5-b54a-3ebb52c474c3}</Project>
       <Name>TeLoArreglo.Logic</Name>
