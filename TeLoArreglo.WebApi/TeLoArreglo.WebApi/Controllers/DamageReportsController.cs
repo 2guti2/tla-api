@@ -38,6 +38,14 @@ namespace TeLoArreglo.WebApi.Controllers
 
             return _damageAppService.GetAll(token);
         }
+        
+        [HttpPut, Route("api/DamageReports/{id}")]
+        public DamageReportCompleteOutputDto ModifyDamageReport(int id, ModifyDamageReportDto modifiedDamage)
+        {
+            string token = Utillities.GetTokenFromRequest(Request);
+
+            return _damageAppService.ModifyDamageReport(token, id, modifiedDamage);
+        }
 
         [HttpPost, Route("api/DamageReports")]
         public DamageReportOutputDto ReportDamage(DamageReportInputDto damage)

@@ -4,6 +4,7 @@
     {
         CreateUser = 0,
         ReportDamage = 1,
-        QueryDamages = 2
+        QueryDamages = 2,
+        ModifyDamage = 3
     }
 }

@@ -13,6 +13,7 @@ namespace TeLoArreglo.Logic.Entities
         public List<Media> MediaResources { get; set; }
         public GeoCoordinate GeoCoordinate { get; set; }
         public User User { get; set; }
+        public DamageStatus Status { get; set; } = DamageStatus.Waiting;
 
         [NotMapped]
         private FluentValidation.Results.ValidationResult _validationResult;

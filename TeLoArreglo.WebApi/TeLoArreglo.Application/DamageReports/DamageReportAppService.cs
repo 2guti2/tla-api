@@ -81,7 +81,20 @@ namespace TeLoArreglo.Application.DamageReports
 
             return _objectMapper.Map<DamageReportCompleteOutputDto>(damageReport);
         }
+        
+        public DamageReportCompleteOutputDto ModifyDamageReport(string token, int id, ModifyDamageReportDto modifiedDamage)
+        {
+            VerifyCredentialsForModifyingDamageReports(token);
 
+            DamageReport damageReport = _damageReportsRepository.Get(id);
+
+            _objectMapper.Map(modifiedDamage, damageReport);
+            
+            CurrentUnitOfWork.SaveChanges();
+
+            return _objectMapper.Map<DamageReportCompleteOutputDto>(damageReport);
+        }
+        
         private void BindMediaResources(DamageReport damage)
         {
             int[] mediaResourceIds = damage.MediaResources.Select(mr => mr.Id).ToArray();
@@ -97,6 +110,14 @@ namespace TeLoArreglo.Application.DamageReports
 
                 damage.MediaResources.Add(dbMedia);
             }
+        }
+
+        private void VerifyCredentialsForModifyingDamageReports(string token)
+        {
+            User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
+
+            if(!_permissionManager.HasPermission(executingUser, Action.ModifyDamage))
+                throw new ForbiddenAccessException();
         }
         
         private void VerifyCredentialsForDamageReporting(string token)

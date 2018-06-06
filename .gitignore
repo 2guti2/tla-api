@@ -8,6 +8,7 @@
 .wrs
 $tf/
 .vs/
+*.cache
 
 # Build results
 
@@ -178,3 +179,8 @@ UruIT.Hurrah.WebSite/App/shared/ClientLog.txt
 UruIT.Hurrah.WebSite/App/shared/ServerLog.txt
 UruIT.Hurrah.WebSite/App/shared/MigrationLog.txt
 UruIT.Hurrah.WebSite/Bower/bower_components/
+TeLoArreglo.WebApi/TeLoArreglo.WebApi/Media
+TeLoArreglo.WebApi/Temp
+TeLoArreglo.Application/obj/Debug/
+TeLoArreglo.WebApi/obj/Debug/
+TeLoArreglo.Repository/obj/Debug/

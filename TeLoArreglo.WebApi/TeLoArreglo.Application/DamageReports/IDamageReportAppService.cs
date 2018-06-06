@@ -9,5 +9,6 @@ namespace TeLoArreglo.Application.DamageReports
         List<DamageReportOutputDto> GetAll(string token);
         List<DamageReportOutputDto> GetAllOf(int id, string token);
         DamageReportCompleteOutputDto Get(int id, string token);
+        DamageReportCompleteOutputDto ModifyDamageReport(string token, int id, ModifyDamageReportDto modifiedDamage);
     }
 }

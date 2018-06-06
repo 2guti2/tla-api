@@ -108,6 +108,7 @@
     <Compile Include="Entities\Admin.cs" />
     <Compile Include="Entities\Crew.cs" />
     <Compile Include="Entities\DamageReport.cs" />
+    <Compile Include="Entities\DamageStatus.cs" />
     <Compile Include="Entities\GeoCoordinate.cs" />
     <Compile Include="Entities\Media.cs" />
     <Compile Include="Entities\Session.cs" />

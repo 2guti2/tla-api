@@ -57,6 +57,8 @@ namespace TeLoArreglo.Application.Dtos
                     cfg.CreateMap<Logic.Entities.DamageReport, DamageReportCompleteOutputDto>()
                         .ForMember(dto => dto.Username, attribute => attribute.MapFrom(src => src.User.Username))
                         .ForMember(dto => dto.UserId, attribute => attribute.MapFrom(src => src.User.Id));
+                    cfg.CreateMap<DamageStatusDto, DamageStatus>();
+                    cfg.CreateMap<ModifyDamageReportDto, Logic.Entities.DamageReport>();
                 }
             );
         }
