@@ -7,5 +7,6 @@ namespace TeLoArreglo.Logic.Common.Users
     {
         void ValidateUser(User user);
         void ValidateSession(Session session);
+        void BlockUser(User user);
     }
 }

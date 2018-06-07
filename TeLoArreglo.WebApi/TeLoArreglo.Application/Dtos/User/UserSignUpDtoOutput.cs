@@ -6,5 +6,6 @@ namespace TeLoArreglo.Application.Dtos.User
     {
         public string Username { get; set; }
         public string Role { get; set; }
+        public bool IsBlocked { get; set; }
     }
 }

@@ -10,7 +10,8 @@ namespace TeLoArreglo.Logic.Entities
                 Action.CreateUser,
                 Action.ReportDamage,
                 Action.QueryDamages,
-                Action.ModifyDamage
+                Action.ModifyDamage,
+                Action.BlockUser
             };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Abp.Domain.Repositories;
 using TeLoArreglo.Exceptions;
 using TeLoArreglo.Logic.Entities;
 
@@ -16,6 +17,11 @@ namespace TeLoArreglo.Logic.Common.Users
         {
             if (session == null)
                 throw new NotLoggedInException();
+        }
+
+        public void BlockUser(User user)
+        {
+            user.IsBlocked = true;
         }
     }
 }
