@@ -8,6 +8,8 @@ using TeLoArreglo.Exceptions;
 using TeLoArreglo.Logic.Common;
 using TeLoArreglo.Logic.Entities;
 using Action = TeLoArreglo.Logic.Entities.Action;
+using DamageReport = TeLoArreglo.Logic.Entities.DamageReport;
+using Session = TeLoArreglo.Logic.Entities.Session;
 
 namespace TeLoArreglo.Application.DamageReports
 {
@@ -101,7 +103,22 @@ namespace TeLoArreglo.Application.DamageReports
 
             return _objectMapper.Map<DamageReportCompleteOutputDto>(damageReport);
         }
-        
+
+        public List<DamageReportOutputDto> GetWithPriority(string token, DamageReportPriorityDto priority)
+        {
+            VerifyCredentialsForQueryingDamageReports(token);
+
+            User user = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
+
+            DamagePriority domainPriority = _objectMapper.Map<DamagePriority>(priority);
+
+            List<DamageReport> damageReports =
+                _damageReportsRepository.GetAllIncluding(dr => dr.MediaResources)
+                .Where(user.DamageReportsICanQuery()).Where(dr => dr.Priority == domainPriority).ToList();
+
+            return _objectMapper.Map<List<DamageReportOutputDto>>(damageReports);
+        }
+
         private void BindMediaResources(DamageReport damage)
         {
             int[] mediaResourceIds = damage.MediaResources.Select(mr => mr.Id).ToArray();
