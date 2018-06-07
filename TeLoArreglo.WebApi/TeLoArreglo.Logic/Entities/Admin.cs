@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace TeLoArreglo.Logic.Entities
 {
@@ -13,5 +15,13 @@ namespace TeLoArreglo.Logic.Entities
                 Action.ModifyDamage,
                 Action.BlockUser
             };
+
+        public override Expression<Func<DamageReport, bool>> DamageReportsICanQuery()
+        {
+            return dr => dr.Status == DamageStatus.Accepted 
+            || dr.Status == DamageStatus.Repaired 
+            || dr.Status == DamageStatus.Repairing 
+            || dr.Status == DamageStatus.Waiting;
+        }
     }
 }

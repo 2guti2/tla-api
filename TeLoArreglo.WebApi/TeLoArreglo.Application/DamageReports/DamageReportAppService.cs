@@ -57,8 +57,10 @@ namespace TeLoArreglo.Application.DamageReports
         {
             VerifyCredentialsForQueryingDamageReports(token);
 
+            User user = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
+
             List<DamageReport> damageReports =
-                _damageReportsRepository.GetAllIncluding(dr => dr.MediaResources).ToList();
+                _damageReportsRepository.GetAllIncluding(dr => dr.MediaResources).Where(user.DamageReportsICanQuery()).ToList();
 
             return _objectMapper.Map<List<DamageReportOutputDto>>(damageReports);
         }
@@ -77,7 +79,12 @@ namespace TeLoArreglo.Application.DamageReports
         {
             VerifyCredentialsForQueryingDamageReports(token);
 
-            DamageReport damageReport = _damageReportsRepository.GetAllIncluding(dr => dr.MediaResources).FirstOrDefault(dr => dr.Id == id);
+            User user = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
+
+            DamageReport damageReport = _damageReportsRepository
+                .GetAllIncluding(dr => dr.MediaResources)
+                .Where(user.DamageReportsICanQuery())
+                .FirstOrDefault(dr => dr.Id == id);
 
             return _objectMapper.Map<DamageReportCompleteOutputDto>(damageReport);
         }
@@ -101,7 +108,7 @@ namespace TeLoArreglo.Application.DamageReports
 
             foreach (int mediaResourceId in mediaResourceIds)
             {
-                var dbMedia = _mediaRepository.Get(mediaResourceId);
+                Logic.Entities.Media dbMedia = _mediaRepository.Get(mediaResourceId);
 
                 if(dbMedia == null)
                     throw new InvalidRequestException();
