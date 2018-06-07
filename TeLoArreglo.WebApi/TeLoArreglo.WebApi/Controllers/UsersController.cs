@@ -30,5 +30,13 @@ namespace TeLoArreglo.WebApi.Controllers
 
             return _userAppService.CreateUser(token, user);
         }
+
+        [HttpPost, Route("api/Users/{id}")]
+        public UserSignUpDtoOutput BlockUser(int id)
+        {
+            string token = Utillities.GetTokenFromRequest(Request);
+
+            return _userAppService.BlockUser(token, id);
+        }
     }
 }

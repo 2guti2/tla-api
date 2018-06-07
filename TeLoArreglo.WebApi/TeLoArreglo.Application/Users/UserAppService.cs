@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using TeLoArreglo.Application.Dtos.User;
@@ -116,6 +115,27 @@ namespace TeLoArreglo.Application.Users
             User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionRepository);
 
             return _objectMapper.Map<List<ActionDto>>(executingUser.PermittedActions);
+        }
+
+        public UserSignUpDtoOutput BlockUser(string token, int id)
+        {
+            VerifyCredentialsForUserBlock(token);
+
+            User user = _userRepository.Get(id);
+
+            _userManager.BlockUser(user);
+
+            CurrentUnitOfWork.SaveChanges();
+
+            return _objectMapper.Map<UserSignUpDtoOutput>(user);
+        }
+
+        private void VerifyCredentialsForUserBlock(string token)
+        {
+            User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionRepository);
+
+            if (!_permissionManager.HasPermission(executingUser, Action.BlockUser))
+                throw new ForbiddenAccessException();
         }
     }
 }
