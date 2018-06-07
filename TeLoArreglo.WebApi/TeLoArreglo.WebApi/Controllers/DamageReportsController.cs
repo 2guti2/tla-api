@@ -38,7 +38,15 @@ namespace TeLoArreglo.WebApi.Controllers
 
             return _damageAppService.GetAll(token);
         }
-        
+
+        [HttpGet, Route("api/DamageReports")]
+        public List<DamageReportOutputDto> GetDamageReportsWithPriority([FromUri] DamageReportPriorityDto priority)
+        {
+            string token = Utillities.GetTokenFromRequest(Request);
+
+            return _damageAppService.GetWithPriority(token, priority);
+        }
+
         [HttpPut, Route("api/DamageReports/{id}")]
         public DamageReportCompleteOutputDto ModifyDamageReport(int id, ModifyDamageReportDto modifiedDamage)
         {

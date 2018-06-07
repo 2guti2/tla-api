@@ -107,6 +107,7 @@
     <Compile Include="Entities\Action.cs" />
     <Compile Include="Entities\Admin.cs" />
     <Compile Include="Entities\Crew.cs" />
+    <Compile Include="Entities\DamagePriority.cs" />
     <Compile Include="Entities\DamageReport.cs" />
     <Compile Include="Entities\DamageStatus.cs" />
     <Compile Include="Entities\GeoCoordinate.cs" />

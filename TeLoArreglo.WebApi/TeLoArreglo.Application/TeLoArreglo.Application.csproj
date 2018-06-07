@@ -91,6 +91,7 @@
     <Compile Include="Dtos\DamageReport\DamageReportCompleteOutputDto.cs" />
     <Compile Include="Dtos\DamageReport\DamageReportInputDto.cs" />
     <Compile Include="Dtos\DamageReport\DamageReportOutputDto.cs" />
+    <Compile Include="Dtos\DamageReport\DamageReportPriorityDto.cs" />
     <Compile Include="Dtos\DamageReport\DamageStatusDto.cs" />
     <Compile Include="Dtos\DamageReport\GeoCoordinateDto.cs" />
     <Compile Include="Dtos\DamageReport\MediaDto.cs" />

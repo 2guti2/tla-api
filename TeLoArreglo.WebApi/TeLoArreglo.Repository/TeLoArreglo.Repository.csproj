@@ -119,6 +119,10 @@
     <Compile Include="Migrations\201806020159270_DamageStatus.Designer.cs">
       <DependentUpon>201806020159270_DamageStatus.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806070316273_DamageReportPriority.cs" />
+    <Compile Include="Migrations\201806070316273_DamageReportPriority.Designer.cs">
+      <DependentUpon>201806070316273_DamageReportPriority.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryModule.cs" />
@@ -155,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806020159270_DamageStatus.resx">
       <DependentUpon>201806020159270_DamageStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806070316273_DamageReportPriority.resx">
+      <DependentUpon>201806070316273_DamageReportPriority.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
