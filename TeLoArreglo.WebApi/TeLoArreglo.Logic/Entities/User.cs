@@ -28,6 +28,11 @@ namespace TeLoArreglo.Logic.Entities
             return u => u.Username.Equals(toCompare.Username) && u.Password.Equals(toCompare.Password);
         }
 
+        public virtual Expression<Func<DamageReport, bool>> DamageReportsICanQuery()
+        {
+            return dr => dr.Status == DamageStatus.Accepted || dr.User.Id == Id;
+        }
+
         [NotMapped]
         private FluentValidation.Results.ValidationResult _validationResult;
 
