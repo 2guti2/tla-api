@@ -1,4 +1,7 @@
-﻿namespace TeLoArreglo.Logic.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using TeLoArreglo.Logic.Validators;
+
+namespace TeLoArreglo.Logic.Entities
 {
     public class GeoCoordinate
     {
