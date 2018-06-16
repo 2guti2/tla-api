@@ -214,6 +214,7 @@
     <Compile Include="App_Start\WebModule.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\DamageReportsController.cs" />
+    <Compile Include="Controllers\DevicesController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">

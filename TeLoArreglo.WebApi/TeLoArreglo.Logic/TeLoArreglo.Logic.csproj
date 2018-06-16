@@ -84,6 +84,7 @@
     </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,6 +93,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DamageReports\DamageReportManager.cs" />
+    <Compile Include="Common\DamageReports\IDamageReportManager.cs" />
     <Compile Include="Common\Media\FilePathResolver.cs" />
     <Compile Include="Common\GlobalFactory.cs" />
     <Compile Include="Common\IPermissionManager.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="Entities\DamagePriority.cs" />
     <Compile Include="Entities\DamageReport.cs" />
     <Compile Include="Entities\DamageStatus.cs" />
+    <Compile Include="Entities\Device.cs" />
     <Compile Include="Entities\GeoCoordinate.cs" />
     <Compile Include="Entities\Media.cs" />
     <Compile Include="Entities\Session.cs" />
@@ -131,8 +135,6 @@
       <Name>TeLoArreglo.Exceptions</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\DamageReports\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

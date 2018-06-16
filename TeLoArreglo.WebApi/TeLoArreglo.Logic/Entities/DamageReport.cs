@@ -9,6 +9,7 @@ namespace TeLoArreglo.Logic.Entities
         public string Description { get; set; } 
         public DateTime Date { get; set; }
         public List<Media> MediaResources { get; set; }
+        public List<Media> RepairedMediaResources { get; set; }
         public GeoCoordinate GeoCoordinate { get; set; }
         public User User { get; set; }
         public DamageStatus Status { get; set; } = DamageStatus.Waiting;

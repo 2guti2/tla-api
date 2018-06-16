@@ -13,6 +13,7 @@ namespace TeLoArreglo.Repository
         public virtual IDbSet<Session> Sessions { get; set; }
         public virtual IDbSet<DamageReport> DamageReports { get; set; }
         public virtual IDbSet<Media> MediaResources { get; set; }
+        public virtual IDbSet<Device> Devices { get; set; }
 
         public TeLoArregloContext() : base("name=TeLoArregloContext")
         {

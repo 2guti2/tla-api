@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
@@ -6,6 +7,7 @@ using TeLoArreglo.Application.Dtos.DamageReport;
 using TeLoArreglo.Application.Users;
 using TeLoArreglo.Exceptions;
 using TeLoArreglo.Logic.Common;
+using TeLoArreglo.Logic.Common.DamageReports;
 using TeLoArreglo.Logic.Entities;
 using Action = TeLoArreglo.Logic.Entities.Action;
 using DamageReport = TeLoArreglo.Logic.Entities.DamageReport;
@@ -17,22 +19,28 @@ namespace TeLoArreglo.Application.DamageReports
     {
         private readonly IObjectMapper _objectMapper;
         private readonly IPermissionManager _permissionManager;
+        private readonly IDamageReportManager _damageReportManager;
         private readonly IRepository<DamageReport> _damageReportsRepository;
         private readonly IRepository<Logic.Entities.Media> _mediaRepository;
         private readonly IRepository<Session> _sessionsRepository;
+        private readonly IRepository<Device> _deviceRepository;
 
         public DamageReportAppService(
             IObjectMapper objectMapper,
             IPermissionManager permissionManager,
+            IDamageReportManager damageReportManager,
             IRepository<DamageReport> damageReportsRepository,
             IRepository<Logic.Entities.Media> mediaRepository,
-            IRepository<Session> sessionsRepository)
+            IRepository<Session> sessionsRepository,
+            IRepository<Device> deviceRepository)
         {
             _objectMapper = objectMapper;
             _permissionManager = permissionManager;
+            _damageReportManager = damageReportManager;
             _damageReportsRepository = damageReportsRepository;
             _mediaRepository = mediaRepository;
             _sessionsRepository = sessionsRepository;
+            _deviceRepository = deviceRepository;
         }
 
         public DamageReportOutputDto ReportDamage(DamageReportInputDto damageDto, string token)
@@ -41,7 +49,7 @@ namespace TeLoArreglo.Application.DamageReports
 
             DamageReport damage = _objectMapper.Map<DamageReport>(damageDto);
 
-            if(!damage.IsValid())
+            if (!damage.IsValid())
                 throw new ModelValidationException(_objectMapper.Map<List<ValidationErrorDto>>(damage.GetValidationErrors()));
 
             BindMediaResources(damage);
@@ -90,7 +98,7 @@ namespace TeLoArreglo.Application.DamageReports
 
             return _objectMapper.Map<DamageReportCompleteOutputDto>(damageReport);
         }
-        
+
         public DamageReportCompleteOutputDto ModifyDamageReport(string token, int id, ModifyDamageReportDto modifiedDamage)
         {
             VerifyCredentialsForModifyingDamageReports(token);
@@ -98,10 +106,25 @@ namespace TeLoArreglo.Application.DamageReports
             DamageReport damageReport = _damageReportsRepository.Get(id);
 
             _objectMapper.Map(modifiedDamage, damageReport);
-            
+
+            CheckIfDamageIsModifiable(damageReport);
+
             CurrentUnitOfWork.SaveChanges();
 
             return _objectMapper.Map<DamageReportCompleteOutputDto>(damageReport);
+        }
+
+        private static void CheckIfDamageIsModifiable(DamageReport damageReport)
+        {
+            if (damageReport.Status == DamageStatus.Repaired)
+                throw new ModelValidationException(
+                    new List<ValidationErrorDto>
+                    {
+                        new ValidationErrorDto
+                        {
+                            Field = "Status", Message = "Cannot repair damage in this endpoint."
+                        }
+                    });
         }
 
         public List<DamageReportOutputDto> GetWithPriority(string token, DamageReportPriorityDto priority)
@@ -119,6 +142,50 @@ namespace TeLoArreglo.Application.DamageReports
             return _objectMapper.Map<List<DamageReportOutputDto>>(damageReports);
         }
 
+        public DamageReportCompleteOutputDto RepairDamage(string token, DamageReportRepairDto damage)
+        {
+            VerifyCredentialsForModifyingDamageReports(token);
+
+            DamageReport dbDamageReport = _damageReportsRepository
+                .GetAllIncluding(d => d.MediaResources).FirstOrDefault(d => d.Id == damage.Id);
+
+            _objectMapper.Map(damage, dbDamageReport);
+
+            BindRepairedMediaResources(dbDamageReport);
+
+            dbDamageReport.Status = DamageStatus.Repaired;
+
+            CurrentUnitOfWork.SaveChanges();
+
+            _damageReportManager.SendDamageRepairedNotification(dbDamageReport, GetDevicesOf(token));
+
+            return _objectMapper.Map<DamageReportCompleteOutputDto>(dbDamageReport);
+        }
+
+        private List<Device> GetDevicesOf(string token)
+        {
+            User user = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
+
+            return _deviceRepository.GetAllList().Where(d => d.User.Id == user.Id).ToList();
+        }
+
+        private void BindRepairedMediaResources(DamageReport damage)
+        {
+            int[] mediaResourceIds = damage.RepairedMediaResources.Select(mr => mr.Id).ToArray();
+
+            foreach (int mediaResourceId in mediaResourceIds)
+            {
+                Logic.Entities.Media dbMedia = _mediaRepository.Get(mediaResourceId);
+
+                if (dbMedia == null)
+                    throw new InvalidRequestException();
+
+                damage.RepairedMediaResources.RemoveAll(mr => mr.Id == mediaResourceId);
+
+                damage.RepairedMediaResources.Add(dbMedia);
+            }
+        }
+
         private void BindMediaResources(DamageReport damage)
         {
             int[] mediaResourceIds = damage.MediaResources.Select(mr => mr.Id).ToArray();
@@ -127,7 +194,7 @@ namespace TeLoArreglo.Application.DamageReports
             {
                 Logic.Entities.Media dbMedia = _mediaRepository.Get(mediaResourceId);
 
-                if(dbMedia == null)
+                if (dbMedia == null)
                     throw new InvalidRequestException();
 
                 damage.MediaResources.RemoveAll(mr => mr.Id == mediaResourceId);
@@ -140,10 +207,10 @@ namespace TeLoArreglo.Application.DamageReports
         {
             User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
 
-            if(!_permissionManager.HasPermission(executingUser, Action.ModifyDamage))
+            if (!_permissionManager.HasPermission(executingUser, Action.ModifyDamage))
                 throw new ForbiddenAccessException();
         }
-        
+
         private void VerifyCredentialsForDamageReporting(string token)
         {
             User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
@@ -156,7 +223,7 @@ namespace TeLoArreglo.Application.DamageReports
         {
             User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
 
-            if(!_permissionManager.HasPermission(executingUser, Action.QueryDamages))
+            if (!_permissionManager.HasPermission(executingUser, Action.QueryDamages))
                 throw new ForbiddenAccessException();
         }
     }

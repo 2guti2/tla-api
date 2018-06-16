@@ -8,6 +8,7 @@ namespace TeLoArreglo.Application.Dtos.DamageReport
         public string Description { get; set; }
         public GeoCoordinateDto GeoCoordinate { get; set; }
         public List<MediaDto> MediaResources { get; set; }
+        public List<MediaDto> RepairedMediaResources { get; set; }
         public DamageStatusDto Status { get; set; }
         public DamageReportPriorityDto Priority { get; set; }
     }
