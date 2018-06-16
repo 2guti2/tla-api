@@ -6,6 +6,7 @@
         ReportDamage = 1,
         QueryDamages = 2,
         ModifyDamage = 3,
-        BlockUser = 4
+        BlockUser = 4,
+        RepairDamage = 5
     }
 }

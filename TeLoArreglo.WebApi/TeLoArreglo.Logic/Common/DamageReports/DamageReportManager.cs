@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
-using Newtonsoft.Json.Serialization;
 using TeLoArreglo.Logic.Entities;
 
 namespace TeLoArreglo.Logic.Common.DamageReports
@@ -14,7 +13,17 @@ namespace TeLoArreglo.Logic.Common.DamageReports
         private const string ServerKey = "AAAAUOUJtD0:APA91bGw74BltDiAeeFKc32PUgYpwtQ182rtAUEQDNIe-gMa-fdibk-DLIb8T342588Eq0qvsjK2AdXLqGspTZbfFMuK-Ts6uEU3F_-PCYX3XFI6t-NX_1hNnVw6nFNy1cPKiz69mhMJ";
         private const string SenderId = "347440002109";
 
-        public void SendDamageRepairedNotification(DamageReport damageReport, List<Device> devices)
+        public void SendDamageRepairedNotification(List<Device> devices)
+        {
+            SendNotificationToDevices(devices, "Damage Repaired", "One of your damages has been repaired");
+        }
+
+        public void SendDamageAcceptedNotification(List<Device> crewDevices)
+        {
+            SendNotificationToDevices(crewDevices, "Damage Accepted", "A new damage has been accepted and it's ready to be repaired");
+        }
+
+        public void SendNotificationToDevices(List<Device> devices, string title, string body)
         {
             foreach (Device device in devices)
             {
@@ -22,7 +31,7 @@ namespace TeLoArreglo.Logic.Common.DamageReports
 
                 WebRequest tRequest = BuildRequest();
 
-                string json = BuildJsonRequest(deviceId);
+                string json = BuildJsonRequest(deviceId, title, body);
 
                 Byte[] byteArray = AddHeaders(tRequest, json);
 
@@ -59,9 +68,9 @@ namespace TeLoArreglo.Logic.Common.DamageReports
             return byteArray;
         }
 
-        private string BuildJsonRequest(string deviceId)
+        private string BuildJsonRequest(string deviceId, string title, string body)
         {
-            var data = BuildPayload(deviceId);
+            var data = BuildPayload(deviceId, title, body);
 
             var serializer = new JavaScriptSerializer();
             return serializer.Serialize(data);
@@ -76,15 +85,15 @@ namespace TeLoArreglo.Logic.Common.DamageReports
             return tRequest;
         }
 
-        public object BuildPayload(string deviceId)
+        public object BuildPayload(string deviceId, string titleContent, string bodyContent)
         {
             return new
             {
                 to = deviceId,
                 notification = new
                 {
-                    body = "One of your damage reports has been repaired.",
-                    title = "Damage Repaired",
+                    body = bodyContent,
+                    title = titleContent,
                     sound = "Enabled"
                 }
             };
