@@ -179,6 +179,10 @@ namespace TeLoArreglo.Application.DamageReports
 
             dbDamageReport.Status = DamageStatus.Repaired;
 
+            User currentUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
+
+            dbDamageReport.CrewMemberThatRepairedTheDamage = currentUser as Crew;
+
             CurrentUnitOfWork.SaveChanges();
 
             _damageReportManager.SendDamageRepairedNotification(GetDevicesOf(token));
@@ -186,11 +190,24 @@ namespace TeLoArreglo.Application.DamageReports
             return _objectMapper.Map<DamageReportCompleteOutputDto>(dbDamageReport);
         }
 
+        public List<DamageReportOutputDto> GeReportsOfUserWithStatus(string token, int id, DamageStatusDto status)
+        {
+            _credentialsVerifier.VerifyCredentialsForQueryingDamageReports(token);
+
+            DamageStatus domainStatus = _objectMapper.Map<DamageStatus>(status);
+
+            List<DamageReport> damageReports = _damageReportsRepository
+                .GetAllIncluding(d => d.MediaResources, d => d.RepairedMediaResources)
+                .Where(d => d.Status == domainStatus && d.CrewMemberThatRepairedTheDamage.Id == id).ToList();
+
+            return _objectMapper.Map<List<DamageReportOutputDto>>(damageReports);
+        }
+
         private List<Device> GetDevicesOf(string token)
         {
             User user = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
 
-            return _deviceRepository.GetAllList().Where(d => d.User.Id == user.Id).ToList();
+            return _deviceRepository.GetAllIncluding(d => d.User).Where(d => d.User.Id == user.Id).ToList();
         }
 
         private void BindRepairedMediaResources(DamageReport damage)

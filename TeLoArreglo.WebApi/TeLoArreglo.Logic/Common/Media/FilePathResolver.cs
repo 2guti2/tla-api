@@ -9,7 +9,7 @@ namespace TeLoArreglo.Logic.Common.Media
         public enum MediaType { Image, Video, Audio }
         public enum ImageFileExtension { Jpg, Png, Jpeg, Gif }
         public enum VideoFileExtension { Mp4 }
-        public enum AudioFileExtension { Mp3 }
+        public enum AudioFileExtension { Mp3, Wav }
 
         public static MediaType GetFileType(string fileName)
         {
