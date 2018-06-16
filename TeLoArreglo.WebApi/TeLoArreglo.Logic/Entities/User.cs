@@ -26,7 +26,7 @@ namespace TeLoArreglo.Logic.Entities
 
         public virtual Expression<Func<DamageReport, bool>> DamageReportsICanQuery()
         {
-            return dr => dr.Status == DamageStatus.Accepted || dr.User.Id == Id;
+            return dr => dr.Status == DamageStatus.Accepted || dr.Status == DamageStatus.Repaired || dr.User.Id == Id;
         }
 
         public bool IsValid()

@@ -24,6 +24,7 @@ namespace TeLoArreglo.Application.DamageReports
         private readonly IRepository<Logic.Entities.Media> _mediaRepository;
         private readonly IRepository<Session> _sessionsRepository;
         private readonly IRepository<Device> _deviceRepository;
+        private readonly CredentialsVerifier _credentialsVerifier;
 
         public DamageReportAppService(
             IObjectMapper objectMapper,
@@ -41,11 +42,12 @@ namespace TeLoArreglo.Application.DamageReports
             _mediaRepository = mediaRepository;
             _sessionsRepository = sessionsRepository;
             _deviceRepository = deviceRepository;
+            _credentialsVerifier = new CredentialsVerifier(_permissionManager, _sessionsRepository);
         }
 
         public DamageReportOutputDto ReportDamage(DamageReportInputDto damageDto, string token)
         {
-            VerifyCredentialsForDamageReporting(token);
+            _credentialsVerifier.VerifyCredentialsForDamageReporting(token);
 
             DamageReport damage = _objectMapper.Map<DamageReport>(damageDto);
 
@@ -65,7 +67,7 @@ namespace TeLoArreglo.Application.DamageReports
 
         public List<DamageReportOutputDto> GetAll(string token)
         {
-            VerifyCredentialsForQueryingDamageReports(token);
+            _credentialsVerifier.VerifyCredentialsForQueryingDamageReports(token);
 
             User user = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
 
@@ -77,7 +79,7 @@ namespace TeLoArreglo.Application.DamageReports
 
         public List<DamageReportOutputDto> GetAllOf(int id, string token)
         {
-            VerifyCredentialsForQueryingDamageReports(token);
+            _credentialsVerifier.VerifyCredentialsForQueryingDamageReports(token);
 
             List<DamageReport> damageReports = _damageReportsRepository
                 .GetAllIncluding(dr => dr.MediaResources, dr => dr.User).Where(dr => dr.User.Id == id).ToList();
@@ -87,7 +89,7 @@ namespace TeLoArreglo.Application.DamageReports
 
         public DamageReportCompleteOutputDto Get(int id, string token)
         {
-            VerifyCredentialsForQueryingDamageReports(token);
+            _credentialsVerifier.VerifyCredentialsForQueryingDamageReports(token);
 
             User user = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
 
@@ -101,17 +103,39 @@ namespace TeLoArreglo.Application.DamageReports
 
         public DamageReportCompleteOutputDto ModifyDamageReport(string token, int id, ModifyDamageReportDto modifiedDamage)
         {
-            VerifyCredentialsForModifyingDamageReports(token);
+            _credentialsVerifier.VerifyCredentialsForModifyingDamageReports(token);
 
             DamageReport damageReport = _damageReportsRepository.Get(id);
 
+            var oldStatus = damageReport.Status;
+
             _objectMapper.Map(modifiedDamage, damageReport);
+
+            var newStatus = damageReport.Status;
 
             CheckIfDamageIsModifiable(damageReport);
 
             CurrentUnitOfWork.SaveChanges();
 
+            NotifyStatusChange(oldStatus, newStatus);
+
             return _objectMapper.Map<DamageReportCompleteOutputDto>(damageReport);
+        }
+
+        private void NotifyStatusChange(DamageStatus oldStatus, DamageStatus newStatus)
+        {
+            if (HasDamageBeenAccepted(oldStatus, newStatus))
+                _damageReportManager.SendDamageAcceptedNotification(GetCrewDevices());
+        }
+
+        private List<Device> GetCrewDevices()
+        {
+            return _deviceRepository.GetAll().Where(device => device.User is Crew).ToList();
+        }
+
+        private bool HasDamageBeenAccepted(DamageStatus oldStatus, DamageStatus newStatus)
+        {
+            return oldStatus != DamageStatus.Accepted && newStatus == DamageStatus.Accepted;
         }
 
         private static void CheckIfDamageIsModifiable(DamageReport damageReport)
@@ -129,7 +153,7 @@ namespace TeLoArreglo.Application.DamageReports
 
         public List<DamageReportOutputDto> GetWithPriority(string token, DamageReportPriorityDto priority)
         {
-            VerifyCredentialsForQueryingDamageReports(token);
+            _credentialsVerifier.VerifyCredentialsForQueryingDamageReports(token);
 
             User user = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
 
@@ -144,7 +168,7 @@ namespace TeLoArreglo.Application.DamageReports
 
         public DamageReportCompleteOutputDto RepairDamage(string token, DamageReportRepairDto damage)
         {
-            VerifyCredentialsForModifyingDamageReports(token);
+            _credentialsVerifier.VerifyCredentialsForRepairingDamageReports(token);
 
             DamageReport dbDamageReport = _damageReportsRepository
                 .GetAllIncluding(d => d.MediaResources).FirstOrDefault(d => d.Id == damage.Id);
@@ -157,7 +181,7 @@ namespace TeLoArreglo.Application.DamageReports
 
             CurrentUnitOfWork.SaveChanges();
 
-            _damageReportManager.SendDamageRepairedNotification(dbDamageReport, GetDevicesOf(token));
+            _damageReportManager.SendDamageRepairedNotification(GetDevicesOf(token));
 
             return _objectMapper.Map<DamageReportCompleteOutputDto>(dbDamageReport);
         }
@@ -201,30 +225,6 @@ namespace TeLoArreglo.Application.DamageReports
 
                 damage.MediaResources.Add(dbMedia);
             }
-        }
-
-        private void VerifyCredentialsForModifyingDamageReports(string token)
-        {
-            User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
-
-            if (!_permissionManager.HasPermission(executingUser, Action.ModifyDamage))
-                throw new ForbiddenAccessException();
-        }
-
-        private void VerifyCredentialsForDamageReporting(string token)
-        {
-            User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
-
-            if (!_permissionManager.HasPermission(executingUser, Action.ReportDamage))
-                throw new ForbiddenAccessException();
-        }
-
-        private void VerifyCredentialsForQueryingDamageReports(string token)
-        {
-            User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
-
-            if (!_permissionManager.HasPermission(executingUser, Action.QueryDamages))
-                throw new ForbiddenAccessException();
         }
     }
 }

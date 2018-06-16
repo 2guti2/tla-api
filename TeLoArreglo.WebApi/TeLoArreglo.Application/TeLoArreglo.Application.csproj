@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="ApplicationModule.cs" />
     <Compile Include="AppService.cs" />
+    <Compile Include="DamageReports\CredentialsVerifier.cs" />
     <Compile Include="DamageReports\DamageReportAppService.cs" />
     <Compile Include="DamageReports\IDamageReportAppService.cs" />
     <Compile Include="Devices\DeviceAppService.cs" />

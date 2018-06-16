@@ -6,6 +6,7 @@ namespace TeLoArreglo.Logic.Common.DamageReports
 {
     public interface IDamageReportManager : IDomainService
     {
-        void SendDamageRepairedNotification(DamageReport damageReport, List<Device> devices);
+        void SendDamageRepairedNotification(List<Device> devices);
+        void SendDamageAcceptedNotification(List<Device> crewDevices);
     }
 }
