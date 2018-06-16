@@ -115,6 +115,7 @@
     <Compile Include="Entities\Session.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Common\ValidationError.cs" />
+    <Compile Include="Entities\Validable.cs" />
     <Compile Include="LogicModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validators\DamageReportValidator.cs" />

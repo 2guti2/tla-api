@@ -42,7 +42,7 @@ namespace TeLoArreglo.Application.DamageReports
             DamageReport damage = _objectMapper.Map<DamageReport>(damageDto);
 
             if(!damage.IsValid())
-                throw new InvalidRequestException();
+                throw new ModelValidationException(_objectMapper.Map<List<ValidationErrorDto>>(damage.GetValidationErrors()));
 
             BindMediaResources(damage);
 
