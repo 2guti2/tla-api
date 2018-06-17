@@ -50,5 +50,13 @@ namespace TeLoArreglo.Application.DamageReports
             if (!_permissionManager.HasPermission(executingUser, Action.RepairDamage))
                 throw new ForbiddenAccessException();
         }
+
+        public void VerifyCredentialsForDeletingDamageReports(string token)
+        {
+            User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
+
+            if(!_permissionManager.HasPermission(executingUser, Action.DeleteDamage))
+                throw new ForbiddenAccessException();
+        }
     }
 }

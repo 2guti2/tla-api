@@ -78,5 +78,13 @@ namespace TeLoArreglo.WebApi.Controllers
 
             return _damageAppService.RepairDamage(token, damage);
         }
+
+        [HttpDelete, Route("api/DamageReports/{id}")]
+        public void DeleteDamage(int id)
+        {
+            string token = Utillities.GetTokenFromRequest(Request);
+
+            _damageAppService.DeleteDamage(token, id);
+        }
     }
 }

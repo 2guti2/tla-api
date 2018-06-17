@@ -13,7 +13,8 @@ namespace TeLoArreglo.Logic.Entities
                 Action.ReportDamage,
                 Action.QueryDamages,
                 Action.ModifyDamage,
-                Action.BlockUser
+                Action.BlockUser,
+                Action.DeleteDamage
             };
 
         public override Expression<Func<DamageReport, bool>> DamageReportsICanQuery()
