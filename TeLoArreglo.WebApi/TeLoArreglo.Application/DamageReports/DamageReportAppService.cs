@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
@@ -9,7 +8,6 @@ using TeLoArreglo.Exceptions;
 using TeLoArreglo.Logic.Common;
 using TeLoArreglo.Logic.Common.DamageReports;
 using TeLoArreglo.Logic.Entities;
-using Action = TeLoArreglo.Logic.Entities.Action;
 using DamageReport = TeLoArreglo.Logic.Entities.DamageReport;
 using Session = TeLoArreglo.Logic.Entities.Session;
 
@@ -201,6 +199,13 @@ namespace TeLoArreglo.Application.DamageReports
                 .Where(d => d.Status == domainStatus && d.CrewMemberThatRepairedTheDamage.Id == id).ToList();
 
             return _objectMapper.Map<List<DamageReportOutputDto>>(damageReports);
+        }
+
+        public void DeleteDamage(string token, int id)
+        {
+            _credentialsVerifier.VerifyCredentialsForDeletingDamageReports(token);
+
+            _damageReportsRepository.Delete(id);
         }
 
         private List<Device> GetDevicesOf(string token)

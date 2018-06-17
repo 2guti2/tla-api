@@ -13,5 +13,6 @@ namespace TeLoArreglo.Application.DamageReports
         List<DamageReportOutputDto> GetWithPriority(string token, DamageReportPriorityDto priority);
         DamageReportCompleteOutputDto RepairDamage(string token, DamageReportRepairDto damage);
         List<DamageReportOutputDto> GeReportsOfUserWithStatus(string token, int id, DamageStatusDto status);
+        void DeleteDamage(string token, int id);
     }
 }
