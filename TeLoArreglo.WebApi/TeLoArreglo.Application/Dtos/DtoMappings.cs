@@ -35,6 +35,7 @@ namespace TeLoArreglo.Application.Dtos
                 cfg.CreateMap<Session, LoggedUserDto>()
                 .ForMember(dto => dto.PermittedActions, attribute => attribute.MapFrom(src => src.User.PermittedActions))
                 .ForMember(dto => dto.Id, attribute => attribute.MapFrom(src => src.User.Id))
+                .ForMember(dto => dto.Username, attribute => attribute.MapFrom(src => src.User.Username))
             );
 
             configuration.Configurators.Add(cfg =>

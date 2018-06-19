@@ -6,6 +6,7 @@ namespace TeLoArreglo.Application.Dtos.User
     {
         public string Token { get; set; }
         public int Id { get; set; }
+        public string Username { get; set; }
         public List<ActionDto> PermittedActions { get; set; }
     }
 }
