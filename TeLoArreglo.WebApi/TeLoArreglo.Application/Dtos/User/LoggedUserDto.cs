@@ -2,10 +2,10 @@
 
 namespace TeLoArreglo.Application.Dtos.User
 {
-    public class TokenDto
+    public class LoggedUserDto
     {
         public string Token { get; set; }
-        public int UserId { get; set; }
+        public int Id { get; set; }
         public List<ActionDto> PermittedActions { get; set; }
     }
 }

@@ -32,11 +32,11 @@ namespace TeLoArreglo.WebApi.Controllers
         }
 
         [HttpGet, Route("api/DamageReports/Users/{id}")]
-        public List<DamageReportOutputDto> GetDamageReportsRepairedByUser(int id, [FromUri] DamageStatusDto status)
+        public List<DamageReportOutputDto> GetDamageReportsRepairedByUser(int id)
         {
             string token = Utillities.GetTokenFromRequest(Request);
 
-            return _damageAppService.GeReportsOfUserWithStatus(token, id, status);
+            return _damageAppService.GetReportsRepairedByUser(token, id);
         }
 
         [HttpGet, Route("api/DamageReports")]

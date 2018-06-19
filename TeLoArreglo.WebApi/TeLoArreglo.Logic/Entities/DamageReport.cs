@@ -8,8 +8,8 @@ namespace TeLoArreglo.Logic.Entities
     {
         public string Description { get; set; } 
         public DateTime Date { get; set; }
-        public List<Media> MediaResources { get; set; }
-        public List<Media> RepairedMediaResources { get; set; }
+        public List<Media> MediaResources { get; set; } = new List<Media>();
+        public List<Media> RepairedMediaResources { get; set; } = new List<Media>();
         public GeoCoordinate GeoCoordinate { get; set; }
         public User User { get; set; }
         public Crew CrewMemberThatRepairedTheDamage { get; set; }

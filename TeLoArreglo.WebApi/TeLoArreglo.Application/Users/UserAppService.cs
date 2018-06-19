@@ -34,7 +34,7 @@ namespace TeLoArreglo.Application.Users
             _sessionRepository = sessionRepository;
         }
 
-        public TokenDto Login(UserLoginDto userDto)
+        public LoggedUserDto Login(UserLoginDto userDto)
         {
             User user = _userRepository.FirstOrDefault(User.EqualityExpression(_objectMapper.Map<User>(userDto)));
 
@@ -43,17 +43,17 @@ namespace TeLoArreglo.Application.Users
             Session session = _sessionRepository.FirstOrDefault(Session.EqualityExpressionByUser(user));
 
             if (session != null)
-                return _objectMapper.Map<TokenDto>(session);
+                return _objectMapper.Map<LoggedUserDto>(session);
 
             session = new Session(user);
             _sessionRepository.Insert(session);
             
             SaveChanges();
 
-            return _objectMapper.Map<TokenDto>(session);
+            return _objectMapper.Map<LoggedUserDto>(session);
         }
 
-        public TokenDto Logout(string token)
+        public LoggedUserDto Logout(string token)
         {
             Session session = UserUtillities.GetCurrentSession(token, _sessionRepository);
 
@@ -61,7 +61,7 @@ namespace TeLoArreglo.Application.Users
 
             _sessionRepository.Delete(session);
 
-            return _objectMapper.Map<TokenDto>(session);
+            return _objectMapper.Map<LoggedUserDto>(session);
         }
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]

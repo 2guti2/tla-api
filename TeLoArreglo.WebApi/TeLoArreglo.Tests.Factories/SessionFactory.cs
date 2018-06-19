@@ -1,4 +1,5 @@
-﻿using TeLoArreglo.Logic.Entities;
+﻿using System;
+using TeLoArreglo.Logic.Entities;
 
 namespace TeLoArreglo.Tests.Factories
 {
@@ -10,6 +11,15 @@ namespace TeLoArreglo.Tests.Factories
             {
                 User = UserFactory.NewUser(),
                 Token = "a"
+            };
+        }
+
+        public static Session NewSessionWithUser(User user)
+        {
+            return new Session
+            {
+                User = user,
+                Token = Guid.NewGuid().ToString()
             };
         }
     }

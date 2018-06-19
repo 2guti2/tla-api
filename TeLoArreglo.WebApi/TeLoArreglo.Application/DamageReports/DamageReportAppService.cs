@@ -16,12 +16,12 @@ namespace TeLoArreglo.Application.DamageReports
     public class DamageReportAppService : AppService, IDamageReportAppService
     {
         private readonly IObjectMapper _objectMapper;
-        private readonly IPermissionManager _permissionManager;
         private readonly IDamageReportManager _damageReportManager;
         private readonly IRepository<DamageReport> _damageReportsRepository;
         private readonly IRepository<Logic.Entities.Media> _mediaRepository;
         private readonly IRepository<Session> _sessionsRepository;
         private readonly IRepository<Device> _deviceRepository;
+        private readonly IRepository<User> _userRepository;
         private readonly CredentialsVerifier _credentialsVerifier;
 
         public DamageReportAppService(
@@ -31,16 +31,17 @@ namespace TeLoArreglo.Application.DamageReports
             IRepository<DamageReport> damageReportsRepository,
             IRepository<Logic.Entities.Media> mediaRepository,
             IRepository<Session> sessionsRepository,
-            IRepository<Device> deviceRepository)
+            IRepository<Device> deviceRepository,
+            IRepository<User> userRepository)
         {
             _objectMapper = objectMapper;
-            _permissionManager = permissionManager;
             _damageReportManager = damageReportManager;
             _damageReportsRepository = damageReportsRepository;
             _mediaRepository = mediaRepository;
             _sessionsRepository = sessionsRepository;
             _deviceRepository = deviceRepository;
-            _credentialsVerifier = new CredentialsVerifier(_permissionManager, _sessionsRepository);
+            _userRepository = userRepository;
+            _credentialsVerifier = new CredentialsVerifier(permissionManager, _sessionsRepository);
         }
 
         public DamageReportOutputDto ReportDamage(DamageReportInputDto damageDto, string token)
@@ -105,13 +106,16 @@ namespace TeLoArreglo.Application.DamageReports
 
             DamageReport damageReport = _damageReportsRepository.Get(id);
 
-            var oldStatus = damageReport.Status;
+            DamageStatus oldStatus = damageReport.Status;
 
             _objectMapper.Map(modifiedDamage, damageReport);
 
-            var newStatus = damageReport.Status;
+            DamageStatus newStatus = damageReport.Status;
 
             CheckIfDamageIsModifiable(damageReport);
+
+            if(modifiedDamage.Status == DamageStatusDto.Repairing)
+                damageReport.CrewMemberThatRepairedTheDamage = _userRepository.Get(modifiedDamage.Crew.Id) as Crew;
 
             CurrentUnitOfWork.SaveChanges();
 
@@ -177,10 +181,6 @@ namespace TeLoArreglo.Application.DamageReports
 
             dbDamageReport.Status = DamageStatus.Repaired;
 
-            User currentUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
-
-            dbDamageReport.CrewMemberThatRepairedTheDamage = currentUser as Crew;
-
             CurrentUnitOfWork.SaveChanges();
 
             _damageReportManager.SendDamageRepairedNotification(GetDevicesOf(token));
@@ -188,15 +188,13 @@ namespace TeLoArreglo.Application.DamageReports
             return _objectMapper.Map<DamageReportCompleteOutputDto>(dbDamageReport);
         }
 
-        public List<DamageReportOutputDto> GeReportsOfUserWithStatus(string token, int id, DamageStatusDto status)
+        public List<DamageReportOutputDto> GetReportsRepairedByUser(string token, int id)
         {
             _credentialsVerifier.VerifyCredentialsForQueryingDamageReports(token);
 
-            DamageStatus domainStatus = _objectMapper.Map<DamageStatus>(status);
-
             List<DamageReport> damageReports = _damageReportsRepository
                 .GetAllIncluding(d => d.MediaResources, d => d.RepairedMediaResources)
-                .Where(d => d.Status == domainStatus && d.CrewMemberThatRepairedTheDamage.Id == id).ToList();
+                .Where(d => d.CrewMemberThatRepairedTheDamage.Id == id).ToList();
 
             return _objectMapper.Map<List<DamageReportOutputDto>>(damageReports);
         }
