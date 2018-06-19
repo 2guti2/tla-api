@@ -134,8 +134,13 @@
   <ItemGroup>
     <Compile Include="ApplicationTestBase.cs" />
     <Compile Include="ApplicationTestModule.cs" />
+    <Compile Include="DamageReports\DamageReportCreationTests.cs" />
+    <Compile Include="DamageReports\DamageReportDeletionTests.cs" />
+    <Compile Include="DamageReports\DamageReportUpdateTests.cs" />
+    <Compile Include="DamageReports\Helpers\DamageReportsMockDatabaseHelper.cs" />
+    <Compile Include="Devices\DeviceAppServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Users\DamageReportAppServiceTests.cs" />
+    <Compile Include="DamageReports\DamageReportReadTests.cs" />
     <Compile Include="Users\UserAppServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>

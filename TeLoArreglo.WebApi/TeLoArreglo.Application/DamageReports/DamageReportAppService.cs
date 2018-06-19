@@ -16,7 +16,6 @@ namespace TeLoArreglo.Application.DamageReports
     public class DamageReportAppService : AppService, IDamageReportAppService
     {
         private readonly IObjectMapper _objectMapper;
-        private readonly IPermissionManager _permissionManager;
         private readonly IDamageReportManager _damageReportManager;
         private readonly IRepository<DamageReport> _damageReportsRepository;
         private readonly IRepository<Logic.Entities.Media> _mediaRepository;
@@ -34,13 +33,12 @@ namespace TeLoArreglo.Application.DamageReports
             IRepository<Device> deviceRepository)
         {
             _objectMapper = objectMapper;
-            _permissionManager = permissionManager;
             _damageReportManager = damageReportManager;
             _damageReportsRepository = damageReportsRepository;
             _mediaRepository = mediaRepository;
             _sessionsRepository = sessionsRepository;
             _deviceRepository = deviceRepository;
-            _credentialsVerifier = new CredentialsVerifier(_permissionManager, _sessionsRepository);
+            _credentialsVerifier = new CredentialsVerifier(permissionManager, _sessionsRepository);
         }
 
         public DamageReportOutputDto ReportDamage(DamageReportInputDto damageDto, string token)
@@ -105,11 +103,11 @@ namespace TeLoArreglo.Application.DamageReports
 
             DamageReport damageReport = _damageReportsRepository.Get(id);
 
-            var oldStatus = damageReport.Status;
+            DamageStatus oldStatus = damageReport.Status;
 
             _objectMapper.Map(modifiedDamage, damageReport);
 
-            var newStatus = damageReport.Status;
+            DamageStatus newStatus = damageReport.Status;
 
             CheckIfDamageIsModifiable(damageReport);
 
@@ -188,15 +186,13 @@ namespace TeLoArreglo.Application.DamageReports
             return _objectMapper.Map<DamageReportCompleteOutputDto>(dbDamageReport);
         }
 
-        public List<DamageReportOutputDto> GeReportsOfUserWithStatus(string token, int id, DamageStatusDto status)
+        public List<DamageReportOutputDto> GetReportsRepairedByUser(string token, int id)
         {
             _credentialsVerifier.VerifyCredentialsForQueryingDamageReports(token);
 
-            DamageStatus domainStatus = _objectMapper.Map<DamageStatus>(status);
-
             List<DamageReport> damageReports = _damageReportsRepository
                 .GetAllIncluding(d => d.MediaResources, d => d.RepairedMediaResources)
-                .Where(d => d.Status == domainStatus && d.CrewMemberThatRepairedTheDamage.Id == id).ToList();
+                .Where(d => d.CrewMemberThatRepairedTheDamage.Id == id).ToList();
 
             return _objectMapper.Map<List<DamageReportOutputDto>>(damageReports);
         }

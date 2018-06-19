@@ -12,7 +12,12 @@ namespace TeLoArreglo.Tests.Factories
 
         public static Admin NewAdmin()
         {
-            return new Admin {Username = "admin", Password = "admin"};
+            return new Admin { Username = "admin", Password = "admin" };
+        }
+
+        public static Crew NewCrew()
+        {
+            return new Crew { Username = "crew", Password = "crew" };
         }
 
         public static UserSignUpDtoInput NewSignUpDtoInputForAdmin()

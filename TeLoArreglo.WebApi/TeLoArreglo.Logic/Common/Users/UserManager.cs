@@ -9,7 +9,7 @@ namespace TeLoArreglo.Logic.Common.Users
     {
         public void ValidateUser(User user)
         {
-            if (user == null)
+            if (user == null || user.IsBlocked)
                 throw new UnauthorizedAccessException();
         }
 
