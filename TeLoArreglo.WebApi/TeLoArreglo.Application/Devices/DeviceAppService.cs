@@ -2,6 +2,7 @@
 using Abp.ObjectMapping;
 using TeLoArreglo.Application.Dtos.Device;
 using TeLoArreglo.Application.Users;
+using TeLoArreglo.Exceptions;
 using TeLoArreglo.Logic.Entities;
 
 namespace TeLoArreglo.Application.Devices
@@ -29,11 +30,19 @@ namespace TeLoArreglo.Application.Devices
 
             BindUser(modelDevice, token);
 
-            _devicesRepository.Insert(modelDevice);
+            if(!Exists(modelDevice))
+                _devicesRepository.Insert(modelDevice);
+            else
+                throw new InvalidRequestException();
 
             CurrentUnitOfWork.SaveChanges();
 
             return _objectMapper.Map<DeviceOutputDto>(modelDevice);
+        }
+
+        private bool Exists(Device modelDevice)
+        {
+            return _devicesRepository.FirstOrDefault(d => d.DeviceToken.Equals(modelDevice.DeviceToken)) != null;
         }
 
         private void BindUser(Device modelDevice, string token)
