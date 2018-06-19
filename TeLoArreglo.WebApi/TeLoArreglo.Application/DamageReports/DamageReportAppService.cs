@@ -21,6 +21,7 @@ namespace TeLoArreglo.Application.DamageReports
         private readonly IRepository<Logic.Entities.Media> _mediaRepository;
         private readonly IRepository<Session> _sessionsRepository;
         private readonly IRepository<Device> _deviceRepository;
+        private readonly IRepository<User> _userRepository;
         private readonly CredentialsVerifier _credentialsVerifier;
 
         public DamageReportAppService(
@@ -30,7 +31,8 @@ namespace TeLoArreglo.Application.DamageReports
             IRepository<DamageReport> damageReportsRepository,
             IRepository<Logic.Entities.Media> mediaRepository,
             IRepository<Session> sessionsRepository,
-            IRepository<Device> deviceRepository)
+            IRepository<Device> deviceRepository,
+            IRepository<User> userRepository)
         {
             _objectMapper = objectMapper;
             _damageReportManager = damageReportManager;
@@ -38,6 +40,7 @@ namespace TeLoArreglo.Application.DamageReports
             _mediaRepository = mediaRepository;
             _sessionsRepository = sessionsRepository;
             _deviceRepository = deviceRepository;
+            _userRepository = userRepository;
             _credentialsVerifier = new CredentialsVerifier(permissionManager, _sessionsRepository);
         }
 
@@ -111,6 +114,9 @@ namespace TeLoArreglo.Application.DamageReports
 
             CheckIfDamageIsModifiable(damageReport);
 
+            if(modifiedDamage.Status == DamageStatusDto.Repairing)
+                damageReport.CrewMemberThatRepairedTheDamage = _userRepository.Get(modifiedDamage.Crew.Id) as Crew;
+
             CurrentUnitOfWork.SaveChanges();
 
             NotifyStatusChange(oldStatus, newStatus);
@@ -174,10 +180,6 @@ namespace TeLoArreglo.Application.DamageReports
             BindRepairedMediaResources(dbDamageReport);
 
             dbDamageReport.Status = DamageStatus.Repaired;
-
-            User currentUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
-
-            dbDamageReport.CrewMemberThatRepairedTheDamage = currentUser as Crew;
 
             CurrentUnitOfWork.SaveChanges();
 
