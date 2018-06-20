@@ -10,5 +10,6 @@ namespace TeLoArreglo.Application.Users
         UserSignUpDtoOutput CreateUser(string token, UserSignUpDtoInput user);
         List<ActionDto> GetActionsOf(string token);
         UserSignUpDtoOutput BlockUser(string token, int id);
+        List<UserSignUpDtoOutput> GetCrewMembers(string token);
     }
 }

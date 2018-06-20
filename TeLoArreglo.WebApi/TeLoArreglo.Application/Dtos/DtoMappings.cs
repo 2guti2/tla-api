@@ -25,6 +25,7 @@ namespace TeLoArreglo.Application.Dtos
             configuration.Configurators.Add(cfg =>
                 cfg.CreateMap<Logic.Entities.User, UserSignUpDtoOutput>()
                     .ForMember(dto => dto.Role, attribute => attribute.MapFrom(src => src.GetType().Name))
+                    .ForMember(dto => dto.IsBlocked, attribute => attribute.MapFrom(src => src.IsBlocked))
                     );
 
             configuration.Configurators.Add(cfg =>

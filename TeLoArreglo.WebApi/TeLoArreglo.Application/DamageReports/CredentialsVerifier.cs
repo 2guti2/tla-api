@@ -29,10 +29,9 @@ namespace TeLoArreglo.Application.DamageReports
 
         public void VerifyCredentialsForDamageReporting(string token)
         {
-            User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
+            UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionsRepository);
 
-            if (!_permissionManager.HasPermission(executingUser, Action.ReportDamage))
-                throw new ForbiddenAccessException();
+            //we don't check privileges because everyone can report damages
         }
 
         public void VerifyCredentialsForQueryingDamageReports(string token)

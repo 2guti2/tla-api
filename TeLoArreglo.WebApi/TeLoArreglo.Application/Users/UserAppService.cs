@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Dynamic;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using TeLoArreglo.Application.Dtos.User;
@@ -20,18 +22,21 @@ namespace TeLoArreglo.Application.Users
         private readonly IUserManager _userManager;
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Session> _sessionRepository;
+        private readonly IRepository<Crew> _crewRepository;
 
         public UserAppService(IObjectMapper objectMapper,
             IPermissionManager permissionManager,
             IUserManager userManager,
             IRepository<User> userRepository,
-            IRepository<Session> sessionRepository)
+            IRepository<Session> sessionRepository,
+            IRepository<Crew> crewRepository)
         {
             _objectMapper = objectMapper;
             _permissionManager = permissionManager;
             _userManager = userManager;
             _userRepository = userRepository;
             _sessionRepository = sessionRepository;
+            _crewRepository = crewRepository;
         }
 
         public LoggedUserDto Login(UserLoginDto userDto)
@@ -128,6 +133,15 @@ namespace TeLoArreglo.Application.Users
             CurrentUnitOfWork.SaveChanges();
 
             return _objectMapper.Map<UserSignUpDtoOutput>(user);
+        }
+
+        public List<UserSignUpDtoOutput> GetCrewMembers(string token)
+        {
+            VerifyCredentialsForUserBlock(token);
+
+            var crewMembers = new List<User>(_crewRepository.GetAll().Where(c => !c.IsBlocked).ToList());
+
+            return _objectMapper.Map<List<UserSignUpDtoOutput>>(crewMembers);
         }
 
         private void VerifyCredentialsForUserBlock(string token)
