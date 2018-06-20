@@ -203,6 +203,8 @@ namespace TeLoArreglo.Application.DamageReports
         {
             _credentialsVerifier.VerifyCredentialsForDeletingDamageReports(token);
 
+            var damage = _damageReportsRepository.GetAllIncluding(d => d.MediaResources, d => d.RepairedMediaResources).FirstOrDefault(d => d.Id == id);
+
             _damageReportsRepository.Delete(id);
         }
 
