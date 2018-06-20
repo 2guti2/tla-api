@@ -152,5 +152,43 @@ namespace TeLoArreglo.Tests.Application.Users
 
             Assert.Throws<NotLoggedInException>(() => _userAppService.GetActionsOf(session.Token));
         }
+
+        [Fact]
+        public void UserAppService_GetCrewMembers()
+        {
+            UsingDbContext(context =>
+            {
+                context.Crews.Add(UserFactory.NewCrew());
+            });
+
+            Session session = SessionFactory.NewSession();
+
+            session.User = UserFactory.NewAdmin();
+
+            UsingDbContext(context => context.Sessions.Add(session));
+
+            var result = _userAppService.GetCrewMembers(session.Token);
+
+            Assert.Single(result);
+        }
+
+        [Fact]
+        public void UserAppService_GetAllUsers()
+        {
+            UsingDbContext(context =>
+            {
+                context.Crews.Add(UserFactory.NewCrew());
+            });
+
+            Session session = SessionFactory.NewSession();
+
+            session.User = UserFactory.NewAdmin();
+
+            UsingDbContext(context => context.Sessions.Add(session));
+
+            var result = _userAppService.GetAllUsers(session.Token);
+
+            Assert.Equal(2, result.Count);
+        }
     }
 }

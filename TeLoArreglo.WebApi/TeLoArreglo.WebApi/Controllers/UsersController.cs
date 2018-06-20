@@ -30,6 +30,14 @@ namespace TeLoArreglo.WebApi.Controllers
 
             return _userAppService.GetCrewMembers(token);
         }
+        
+        [HttpGet, Route("api/Users")]
+        public List<UserSignUpDtoOutput> GetUsers()
+        {
+            string token = Utillities.GetTokenFromRequest(Request);
+
+            return _userAppService.GetAllUsers(token);
+        }
 
         [HttpPost, Route("api/Users")]
         public UserSignUpDtoOutput SignUpUser(UserSignUpDtoInput user)

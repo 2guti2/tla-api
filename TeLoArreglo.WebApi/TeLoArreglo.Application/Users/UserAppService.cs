@@ -144,6 +144,15 @@ namespace TeLoArreglo.Application.Users
             return _objectMapper.Map<List<UserSignUpDtoOutput>>(crewMembers);
         }
 
+        public List<UserSignUpDtoOutput> GetAllUsers(string token)
+        {
+            VerifyCredentialsForUserBlock(token);
+
+            var users = _userRepository.GetAll().ToList();
+
+            return _objectMapper.Map<List<UserSignUpDtoOutput>>(users);
+        }
+
         private void VerifyCredentialsForUserBlock(string token)
         {
             User executingUser = UserUtillities.GetExecutingUserIfLoggedIn(token, _sessionRepository);

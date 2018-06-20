@@ -11,5 +11,6 @@ namespace TeLoArreglo.Application.Users
         List<ActionDto> GetActionsOf(string token);
         UserSignUpDtoOutput BlockUser(string token, int id);
         List<UserSignUpDtoOutput> GetCrewMembers(string token);
+        List<UserSignUpDtoOutput> GetAllUsers(string token);
     }
 }
