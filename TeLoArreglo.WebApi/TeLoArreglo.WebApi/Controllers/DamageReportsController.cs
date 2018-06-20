@@ -31,7 +31,7 @@ namespace TeLoArreglo.WebApi.Controllers
             return _damageAppService.GetAllOf(id, token);
         }
 
-        [HttpGet, Route("api/DamageReports/Users/{id}")]
+        [HttpGet, Route("api/RepairedDamageReports/Users/{id}")]
         public List<DamageReportOutputDto> GetDamageReportsRepairedByUser(int id)
         {
             string token = Utillities.GetTokenFromRequest(Request);
