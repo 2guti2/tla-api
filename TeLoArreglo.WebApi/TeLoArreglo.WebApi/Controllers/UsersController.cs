@@ -14,13 +14,29 @@ namespace TeLoArreglo.WebApi.Controllers
         {
             _userAppService = userAppService;
         }
-        
+
         [HttpGet, Route("api/Actions")]
         public List<ActionDto> GetActions()
         {
             string token = Utillities.GetTokenFromRequest(Request);
 
             return _userAppService.GetActionsOf(token);
+        }
+
+        [HttpGet, Route("api/Crews")]
+        public List<UserSignUpDtoOutput> GetCrewMembers()
+        {
+            string token = Utillities.GetTokenFromRequest(Request);
+
+            return _userAppService.GetCrewMembers(token);
+        }
+
+        [HttpGet, Route("api/Users")]
+        public List<UserSignUpDtoOutput> GetUsers()
+        {
+            string token = Utillities.GetTokenFromRequest(Request);
+
+            return _userAppService.GetAllUsers(token);
         }
 
         [HttpPost, Route("api/Users")]

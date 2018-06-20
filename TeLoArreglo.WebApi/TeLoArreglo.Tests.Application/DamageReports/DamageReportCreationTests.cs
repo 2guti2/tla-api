@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using TeLoArreglo.Application.DamageReports;
 using TeLoArreglo.Application.Dtos.DamageReport;
+using TeLoArreglo.Exceptions;
 using TeLoArreglo.Logic.Entities;
 using TeLoArreglo.Tests.Application.DamageReports.Helpers;
 using TeLoArreglo.Tests.Factories;
@@ -35,6 +36,25 @@ namespace TeLoArreglo.Tests.Application.DamageReports
         }
 
         [Fact]
+        public void ReportDamageTest_NotValid()
+        {
+            DamageReportInputDto dto = DamageReportFactory.NewDamageReportInput();
+            dto.Description = string.Empty;
+
+            string token = UsingDbContext(DamageReportsMockDatabaseHelper.AddAdminToContext);
+
+            Assert.Throws<ModelValidationException>(() => _damageReportAppService.ReportDamage(dto, token));
+        }
+
+        [Fact]
+        public void ReportDamageTest_NotLoggedIn()
+        {
+            DamageReportInputDto dto = DamageReportFactory.NewDamageReportInput();
+
+            Assert.Throws<NotLoggedInException>(() => _damageReportAppService.ReportDamage(dto, "aaa"));
+        }
+
+        [Fact]
         public void RepairDamageTest()
         {
             DamageReportInputDto dto = DamageReportFactory.NewDamageReportInput();
@@ -53,6 +73,19 @@ namespace TeLoArreglo.Tests.Application.DamageReports
 
                 Assert.Equal(DamageStatus.Repaired, damage.Status);
             });
+        }
+
+        [Fact]
+        public void RepairDamageTest_InsufficientPrivileges()
+        {
+            DamageReportInputDto dto = DamageReportFactory.NewDamageReportInput();
+
+            string token = UsingDbContext(DamageReportsMockDatabaseHelper.AddAdminToContext);
+
+            int id = _damageReportAppService.ReportDamage(dto, token).Id;
+
+            Assert.Throws<ForbiddenAccessException>(() =>
+                _damageReportAppService.RepairDamage(token, new DamageReportRepairDto { Id = id }));
         }
     }
 }
