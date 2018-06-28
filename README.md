@@ -1,12 +1,20 @@
 # TeLoArreglo Rest-API reference
 
+## Api Installation Guide
+
+### Prerequisites
+* Have [.net framework 4.7.1 installed](https://www.microsoft.com/es-ES/download/details.aspx?id=56116)
+* Have installed iis with asp net features
+* Create a website pointing to the project folders
+* Compile code
+* Run :)
+
 ## Index
 
 - [1 Authorization (Log in)](#1-authorization) 
 - [2 Logout](#2-logout)
 - [3 Create new user or User registration](#3-create-new-user-or-user-registration)
 - [4 Get actions of user](#4-get-actions-of-user)
-
 
 ## 1 Authorization (Log in)
 
