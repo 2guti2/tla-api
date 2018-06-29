@@ -6,6 +6,8 @@
 * Have [.net framework 4.7.1 installed](https://www.microsoft.com/es-ES/download/details.aspx?id=56116)
 * Have installed iis with asp net features
 * Create a website pointing to the project folders
+* Create database and configure connection string to point to that db. 
+* Create a user with role "Admin"
 * Compile code
 * Run :)
 
